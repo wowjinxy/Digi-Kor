@@ -2,6 +2,7 @@
 #include <tchar.h>
 #include <iostream>
 #include <cstdio>
+#include "hook_system.h"
 
 FARPROC p[3] = { 0 };
 
@@ -11,7 +12,6 @@ void CreateConsole() {
     freopen("CONOUT$", "w", stderr);
     freopen("CONIN$", "r", stdin);
 
-    // Fun Digimon-style message
     std::cout << R"(
   ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ 
  ||P |||R |||O |||D |||I |||G |||I |||O |||U |||S ||
@@ -25,9 +25,8 @@ void CreateConsole() {
 
 void ApplyNoCD() {
     HANDLE hProcess = GetCurrentProcess();
-    uintptr_t baseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL)); // EXE base
+    uintptr_t baseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 
-    // Patch definitions
     struct Patch {
         uintptr_t offset;
         BYTE data[8];
@@ -53,12 +52,10 @@ void ApplyNoCD() {
     }
 }
 
-extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID)
-{
+extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
     static HINSTANCE hL;
 
-    if (reason == DLL_PROCESS_ATTACH)
-    {
+    if (reason == DLL_PROCESS_ATTACH) {
         hL = LoadLibrary(_T(".\\D3D8_org.dll"));
         if (!hL) return FALSE;
 
@@ -67,15 +64,15 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID)
         p[2] = GetProcAddress(hL, "ValidateVertexShader");
 
         CreateConsole();
-		ApplyNoCD();
+        ApplyNoCD();
+        RegisterAllHooks();
     }
-    else if (reason == DLL_PROCESS_DETACH)
-    {
+    else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
+        UnregisterAllHooks();
     }
 
     return TRUE;
 }
 
-// This forwards the export entirely to the real DLL (no wrapper function needed)
 #pragma comment(linker, "/export:Direct3DCreate8=D3D8_org.Direct3DCreate8")
