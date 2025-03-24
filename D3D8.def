@@ -1,0 +1,2 @@
+EXPORTS
+Direct3DCreate8=Proxy_Direct3DCreate8 @1
