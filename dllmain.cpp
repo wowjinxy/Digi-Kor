@@ -2,7 +2,7 @@
 #include <tchar.h>
 #include <iostream>
 #include <cstdio>
-#include "hook_system.h"
+#include "hook_manager.hpp"
 
 FARPROC p[3] = { 0 };
 
@@ -11,6 +11,8 @@ void CreateConsole() {
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
     freopen("CONIN$", "r", stdin);
+
+    std::ios::sync_with_stdio();
 
     std::cout << R"(
   ____ ____ ____ ____ ____ ____ ____ ____ ____ ____ 
@@ -24,7 +26,6 @@ void CreateConsole() {
 }
 
 void ApplyNoCD() {
-    HANDLE hProcess = GetCurrentProcess();
     uintptr_t baseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 
     struct Patch {
@@ -63,13 +64,14 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         p[1] = GetProcAddress(hL, "ValidatePixelShader");
         p[2] = GetProcAddress(hL, "ValidateVertexShader");
 
+        DisableThreadLibraryCalls(hInst);
         CreateConsole();
         ApplyNoCD();
-        RegisterAllHooks();
+        //InitializeHooks(hInst);  // <--- central hook + pointer setup
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
-        UnregisterAllHooks();
+        //ShutdownHooks();
     }
 
     return TRUE;
