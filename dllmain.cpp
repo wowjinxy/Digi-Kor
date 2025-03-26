@@ -67,11 +67,11 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         DisableThreadLibraryCalls(hInst);
         CreateConsole();
         ApplyNoCD();
-        //InitializeHooks(hInst);  // <--- central hook + pointer setup
+        InitializeHooks(hInst);  // <--- central hook + pointer setup
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
-        //ShutdownHooks();
+        ShutdownHooks();
     }
 
     return TRUE;

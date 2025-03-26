@@ -219,7 +219,7 @@ Detouring detours[] = {
     { 0x00410bd0, "FUN_00410bd0", false },
     { 0x00410be0, "FUN_00410be0", false },
     { 0x00410d10, "FUN_00410d10", false },
-    { 0x00410d40, "FUN_00410d40", false },
+    { 0x00410d40, "InitializeFrameTimer", true },
     { 0x00410d70, "FUN_00410d70", false },
     { 0x00410d80, "FUN_00410d80", false },
     { 0x00410dc0, "FUN_00410dc0", false },
@@ -3475,6 +3475,7 @@ Detouring detours[] = {
     { 0x004a653e, "Unwind@004a653e", false },
     { 0x004a6560, "Unwind@004a6560", false },
     { 0x004a6580, "Unwind@004a6580", false },
+    { 0x004a738c, "timeGetTime", true },
 };
 
 const size_t detourCount = sizeof(detours) / sizeof(detours[0]);

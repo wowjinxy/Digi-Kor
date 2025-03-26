@@ -1,10 +1,13 @@
 #pragma once
 #include <cstddef>
 
+enum class HookType { AUTO, CODE, IAT };
+
 struct Detouring {
-    size_t addressInOriginalBinary;
+    uintptr_t addressInOriginalBinary;
     const char* nameInDllReplacement;
     bool stub;
+    HookType type = HookType::AUTO;
 
     void* addrToReplace = nullptr;
     void* replaceWith = nullptr;
