@@ -1,10 +1,11 @@
 #include "hook_manager.hpp"
 #include "Detouring.hpp"
+#include "FunctionIncludes.h"
 #include <windows.h>
 #include <MinHook.h>
 #include <iostream>
 
-bool InitializeHooks(HINSTANCE hInst)
+bool InitializeHooks(HINSTANCE /*hInst*/)
 {
     if (MH_Initialize() != MH_OK) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -20,11 +21,9 @@ bool InitializeHooks(HINSTANCE hInst)
         if (!d.stub)
             continue;
 
-        d.replaceWith = reinterpret_cast<void*>(GetProcAddress(hInst, d.nameInDllReplacement));
-
         if (!d.replaceWith) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-            std::cerr << "[-] Replacement function not found for: " << d.nameInDllReplacement << std::endl;
+            std::cerr << "[-] Replacement function is null for: " << d.nameInDllReplacement << std::endl;
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             continue;
         }
@@ -54,12 +53,13 @@ bool InitializeHooks(HINSTANCE hInst)
         }
         else {
             // Normal Code Hook
-            d.addrToReplace = reinterpret_cast<void*>(d.addressInOriginalBinary);
+            void* addrToReplace = reinterpret_cast<void*>(d.addressInOriginalBinary);
 
-            if (MH_CreateHook(d.addrToReplace, d.replaceWith, nullptr) == MH_OK &&
-                MH_EnableHook(d.addrToReplace) == MH_OK) {
+            if (MH_CreateHook(addrToReplace, d.replaceWith, d.originalCall) == MH_OK &&
+                MH_EnableHook(addrToReplace) == MH_OK) {
                 std::cout << "[+] Hooked: " << d.nameInDllReplacement << std::endl;
             }
+
             else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
                 std::cerr << "[-] Hook failed: " << d.nameInDllReplacement << std::endl;

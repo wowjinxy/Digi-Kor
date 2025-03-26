@@ -102,6 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libMinHook-x86-v141-mdd.lib;</AdditionalDependencies>
+      <OutputFile>E:\Digimon World PC\Install\D3D8.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,6 +125,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libMinHook-x86-v141-md.lib</AdditionalDependencies>
+      <OutputFile>E:\Digimon World PC\Install\D3D8.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -166,6 +168,7 @@
     <ClCompile Include="detouring.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="hook_manager.cpp" />
+    <ClCompile Include="src\system\CRT.cpp" />
     <ClCompile Include="src\system\time.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +177,8 @@
   <ItemGroup>
     <ClInclude Include="Detouring.hpp" />
     <ClInclude Include="hook_manager.hpp" />
+    <ClInclude Include="include\FunctionIncludes.h" />
+    <ClInclude Include="include\system\CRT.h" />
     <ClInclude Include="include\system\time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

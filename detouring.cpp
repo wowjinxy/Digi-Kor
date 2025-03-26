@@ -1,7 +1,8 @@
 #include "Detouring.hpp"
+#include "FunctionIncludes.h"
 
 Detouring detours[] = {
-    { 0x00401000, "FUN_00401000", false },
+    /*{0x00401000, "FUN_00401000", false},
     { 0x00401020, "FUN_00401020", false },
     { 0x00401040, "FUN_00401040", false },
     { 0x00401050, "FUN_00401050", false },
@@ -218,9 +219,9 @@ Detouring detours[] = {
     { 0x00410bb0, "FUN_00410bb0", false },
     { 0x00410bd0, "FUN_00410bd0", false },
     { 0x00410be0, "FUN_00410be0", false },
-    { 0x00410d10, "FUN_00410d10", false },
-    { 0x00410d40, "InitializeFrameTimer", true },
-    { 0x00410d70, "FUN_00410d70", false },
+    { 0x00410d10, "FUN_00410d10", false },*/
+    { "InitializeFrameTimer", 0x00410d40, reinterpret_cast<void*>(&InitializeFrameTimer), HookType::CODE, false },//needs fixing
+    /*{0x00410d70, "FUN_00410d70", false},
     { 0x00410d80, "FUN_00410d80", false },
     { 0x00410dc0, "FUN_00410dc0", false },
     { 0x00410e20, "FUN_00410e20", false },
@@ -2378,13 +2379,13 @@ Detouring detours[] = {
     { 0x004a1da6, "FUN_004a1da6", false },
     { 0x004a1e04, "FUN_004a1e04", false },
     { 0x004a1e1a, "FUN_004a1e1a", false },
-    { 0x004a1e84, "FUN_004a1e84", false },
-    { 0x004a1e9c, "_ftol", false },
-    { 0x004a1ea2, "FUN_004a1ea2", false },
+    { 0x004a1e84, "FUN_004a1e84", false },*/
+	{ "_ftol", 0x004a1e9c, reinterpret_cast<void*>(&_ftol), HookType::CODE, false }, // I have no idea what's going on here
+    /*{0x004a1ea2, "FUN_004a1ea2", false},
     { 0x004a1ece, "FUN_004a1ece", false },
-    { 0x004a1f8a, "WinMainCRTStartup_MSVC6", false },
-    { 0x004a20e8, "_EH_prolog", false },
-    { 0x004a20f0, "FUN_004a20f0", false },
+    { 0x004a1f8a, "WinMainCRTStartup_MSVC6", false },*/
+    { "_EH_prolog", 0x004a20e8, reinterpret_cast<void*>(&_EH_prolog), HookType::CODE, false }, // Hard crash
+    /*{0x004a20f0, "FUN_004a20f0", false},
     { 0x004a2120, "floor", false },
     { 0x004a2130, "__aullshr", false },
     { 0x004a2150, "_CIacos", false },
@@ -3474,8 +3475,8 @@ Detouring detours[] = {
     { 0x004a6533, "Unwind@004a6533", false },
     { 0x004a653e, "Unwind@004a653e", false },
     { 0x004a6560, "Unwind@004a6560", false },
-    { 0x004a6580, "Unwind@004a6580", false },
-    { 0x004a738c, "timeGetTime", true },
+    { 0x004a6580, "Unwind@004a6580", false },*/
+    { "timeGetTime", 0x004a738c, reinterpret_cast<void*>(&timeGetTime), HookType::AUTO, true},
 };
 
 const size_t detourCount = sizeof(detours) / sizeof(detours[0]);

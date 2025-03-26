@@ -11,3 +11,7 @@ struct FrameTimer {
     bool active;
     DWORD startTime;
 };
+
+// Somewhere accessible (e.g. time.h or time.cpp)
+typedef void(__cdecl* InitializeFrameTimerFunc)(void*, uint32_t);
+extern InitializeFrameTimerFunc originalInitializeFrameTimer;
