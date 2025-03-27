@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdio>
 #include "hook_manager.hpp"
+#include "ConfigINI.h"
 
 FARPROC p[3] = { 0 };
 
@@ -53,6 +54,24 @@ void ApplyNoCD() {
     }
 }
 
+void ApplyDisplaySettings(const ConfigINI& config) {
+    if (config.getBool("Display", "Fullscreen", false)) {
+        DEVMODE dm = {};
+        dm.dmSize = sizeof(DEVMODE);
+        dm.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
+        dm.dmPelsWidth = config.getInt("Display", "Width", 640);
+        dm.dmPelsHeight = config.getInt("Display", "Height", 480);
+        dm.dmBitsPerPel = 32;
+
+        if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL) {
+            std::cout << "[+] Fullscreen mode set to " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << "\n";
+        }
+        else {
+            std::cerr << "[-] Failed to set fullscreen display mode.\n";
+        }
+    }
+}
+
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
     static HINSTANCE hL;
 
@@ -66,8 +85,16 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
 
         DisableThreadLibraryCalls(hInst);
         CreateConsole();
+
+        ConfigINI config("config.ini");
+        ApplyDisplaySettings(config);
+
         ApplyNoCD();
-        InitializeHooks(hInst);  // <--- central hook + pointer setup
+        InitializeHooks(hInst);
+
+        //if (!LoadMFC42()) {
+            //return FALSE;
+        //}
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);

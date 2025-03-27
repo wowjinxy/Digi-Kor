@@ -18,5 +18,6 @@ struct Detouring {
 extern Detouring detours[];
 extern const size_t detourCount;
 
-#define CALL_ORIGINAL(name, addr, ...) \
-    reinterpret_cast<decltype(name)*>(addr)(__VA_ARGS__)
+#define CALL_ORIGINAL(name, ...) \
+    reinterpret_cast<decltype(&name)>(detours[DetourIndex_##name].stub)(__VA_ARGS__)
+

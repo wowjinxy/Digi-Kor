@@ -2338,9 +2338,9 @@ Detouring detours[] = {
     { 0x004a1b04, "OnCmdMsg", false },
     { 0x004a1b0a, "GetRuntimeClass", false },
     { 0x004a1b10, "CWinApp", false },
-    { 0x004a1b16, "~CWinApp", false },
-    { 0x004a1b1c, "ShowWindow", false },
-    { 0x004a1b22, "SetRegistryKey", false },
+    { 0x004a1b16, "~CWinApp", false },*/
+    { "ShowWindow", 0x004A1B1C, reinterpret_cast<void*>(&MyShowWindowThunk), HookType::CODE, true },
+    /*{0x004a1b22, "SetRegistryKey", false},
     { 0x004a1b28, "ExitInstance", false },
     { 0x004a1b2e, "AfxGetThread", false },
     { 0x004a1b34, "operator", false },
@@ -3476,6 +3476,7 @@ Detouring detours[] = {
     { 0x004a653e, "Unwind@004a653e", false },
     { 0x004a6560, "Unwind@004a6560", false },
     { 0x004a6580, "Unwind@004a6580", false },*/
+    // Clearly mark this as IAT hook
     { "timeGetTime", 0x004a738c, reinterpret_cast<void*>(&timeGetTime), HookType::AUTO, true},
 };
 
