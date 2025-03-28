@@ -17,6 +17,21 @@ HDC g_hDC = nullptr;
 HGLRC g_hGLRC = nullptr;
 std::atomic<bool> g_OpenGLInitialized = false;
 
+// Replicating the global MFC object
+struct AppGlobalStruct {
+    void** vtable;     // 0x00
+    uint8_t pad[0x1C]; // 0x04 - 0x1F
+    void* gameContext; // 0x20
+};
+
+// Bind directly to game's RAM area
+AppGlobalStruct* g_AppGlobal = reinterpret_cast<AppGlobalStruct*>(0x004c93d0);
+
+// Optional: expose it like the original did
+extern "C" void* __cdecl GetGameContext() {
+    return g_AppGlobal ? g_AppGlobal->gameContext : nullptr;
+}
+
 bool InitOpenGL(HWND hWnd)
 {
     g_hWnd = hWnd;
@@ -75,9 +90,14 @@ void RenderFrame()
     SwapBuffers(g_hDC);
 }
 
+using GameLoopFunc = void(__fastcall*)(int);
+GameLoopFunc GameLoopTick = reinterpret_cast<GameLoopFunc>(0x0040ec70);
+
 int RunOpenGLLoop()
 {
     MSG msg;
+    void* gameContext = GetGameContext();// <- Replace with correct way to retrieve param_1
+
     while (true) {
         while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT)
@@ -85,6 +105,11 @@ int RunOpenGLLoop()
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        if (gameContext) {
+            GameLoopTick((int)gameContext);
+        }
+
         RenderFrame();
     }
     return 0;
