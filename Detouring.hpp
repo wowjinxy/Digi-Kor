@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <cstring>
 
 enum class HookType { AUTO, CODE, IAT };
 
@@ -18,6 +19,14 @@ struct Detouring {
 extern Detouring detours[];
 extern const size_t detourCount;
 
-#define CALL_ORIGINAL(name, ...) \
-    reinterpret_cast<decltype(&name)>(detours[DetourIndex_##name].stub)(__VA_ARGS__)
+inline void* GetOriginalFunction(const char* name) {
+    for (size_t i = 0; i < detourCount; ++i) {
+        if (strcmp(detours[i].nameInDllReplacement, name) == 0 && detours[i].originalCall) {
+            return *detours[i].originalCall;
+        }
+    }
+    return nullptr;
+}
 
+#define CALL_ORIGINAL(name, ...) \
+    reinterpret_cast<decltype(&name)>(GetOriginalFunction(#name))(__VA_ARGS__)

@@ -1,6 +1,8 @@
 #include "Detouring.hpp"
 #include "FunctionIncludes.h"
 
+void* pOriginalWinMain = nullptr;
+
 Detouring detours[] = {
     /*{0x00401000, "FUN_00401000", false},
     { 0x00401020, "FUN_00401020", false },
@@ -2345,8 +2347,9 @@ Detouring detours[] = {
     { 0x004a1b2e, "AfxGetThread", false },
     { 0x004a1b34, "operator", false },
     { 0x004a1b3a, "AfxGetModuleState", false },
-    { 0x004a1b40, "Ordinal_537", false },
-    { 0x004a1c3c, "Ordinal_674", false },
+    { 0x004a1b40, "Ordinal_537", false },*/
+    { "CWndCreateThunk", 0x004a1c3c, reinterpret_cast<void*>(&CWndCreateThunk), HookType::CODE, true },
+    /*{0x004a1c3c, "Ordinal_674", false},
     { 0x004a1c42, "Ordinal_366", false },
     { 0x004a1c48, "Ordinal_1233", false },
     { 0x004a1c4e, "Ordinal_5252", false },
@@ -2397,9 +2400,9 @@ Detouring detours[] = {
     { 0x004a217a, "_initterm", false },
     { 0x004a2180, "FUN_004a2180", false },
     { 0x004a2195, "FUN_004a2195", false },
-    { 0x004a2196, "_controlfp", false },
-    { 0x004a219c, "WinMain", false },
-    { 0x004a21b4, "SetModuleStateAndCodePage", false },
+    { 0x004a2196, "_controlfp", false },*/
+    { "WinMain", 0x004A219C, reinterpret_cast<void*>(&AfxWinMain), HookType::CODE, true },
+    /*{0x004a21b4, "SetModuleStateAndCodePage", false},
     { 0x004a21dd, "ApplyModuleStateAndCodePage", false },
     { 0x004a21e2, "ApplyModuleStateAndCodePage", false },
     { 0x004a21f4, "WinMain", false },
