@@ -161,6 +161,53 @@ BOOL __stdcall MyShowWindowThunkImpl(HWND hWnd, int nCmdShow)
     return RealShowWindow ? RealShowWindow(hWnd, nCmdShow) : FALSE;
 }
 
+const wchar_t* kWindowClassName = L"GameWindow";
+const wchar_t* kWindowTitle = L"My Game Title - OpenGL Edition";
+
+HWND CreateSimpleWindow(HINSTANCE hInstance, const char* className = "GameWindow")
+{
+    WNDCLASSW wc = {};
+    wc.lpfnWndProc = WndProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = kWindowClassName;
+    wc.style = CS_OWNDC;
+    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+
+    if (!RegisterClassW(&wc)) {
+        MessageBoxW(nullptr, L"Failed to register window class!", L"Error", MB_ICONERROR);
+        return nullptr;
+    }
+
+    DWORD style = WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME;
+
+    RECT rect = { 0, 0, 1280, 720 };
+    AdjustWindowRect(&rect, style, FALSE);
+
+    HWND hWnd = CreateWindowExW(
+        0,
+        kWindowClassName,
+        L"Custom Game Window",
+        style,
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        rect.right - rect.left,
+        rect.bottom - rect.top,
+        nullptr,
+        nullptr,
+        hInstance,
+        nullptr
+    );
+
+    if (!hWnd) {
+        MessageBoxA(nullptr, "Failed to create window!", "Error", MB_ICONERROR);
+        return nullptr;
+    }
+
+    ShowWindow(hWnd, SW_SHOW);
+    UpdateWindow(hWnd);
+
+    return hWnd;
+}
+
 int __stdcall AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPTSTR lpCmdLine, int nCmdShow)
 {
@@ -169,7 +216,32 @@ int __stdcall AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     int nReturnCode = -1;
     FWinThread* pThread = AfxGetThread();
 
-    // Perform specific initializations
+    HWND hWnd = CreateSimpleWindow(hInstance);
+    if (!hWnd)
+        return -1;
+
+    if (!InitOpenGL(hWnd)) {
+        std::cerr << "[!] OpenGL init failed.\n";
+        return -1;
+    }
+
+    pThread->m_pMainWnd = hWnd;
+
+    // --- Call InitializeMainWindowAndRenderer --- //
+    using InitRendererFunc = void* (__fastcall*)(void*);
+    InitRendererFunc InitializeMainWindowAndRenderer = reinterpret_cast<InitRendererFunc>(0x00406600);
+
+    if (g_AppGlobal)
+    {
+        InitializeMainWindowAndRenderer(g_AppGlobal);
+        std::cout << "[+] Called InitializeMainWindowAndRenderer\n";
+    }
+    else
+    {
+        std::cerr << "[!] App global structure not initialized.\n";
+    }
+
+    // Proceed with original run loop
     if (!pThread->InitInstance())
     {
         if (pThread->m_pMainWnd != NULL)
