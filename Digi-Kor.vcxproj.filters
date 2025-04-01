@@ -19,6 +19,12 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{315aa4c4-3580-4c67-811d-84f99a31fb7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\localization">
+      <UniqueIdentifier>{76875ccc-df2f-4738-953c-4d7590b6bc35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\localization">
+      <UniqueIdentifier>{1f6923ff-2435-49c9-adf2-5e3473d01b34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -45,6 +51,21 @@
     <ClCompile Include="src\system\time.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\system\FWinApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinProc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\localization\ConvertJKParser.cpp">
+      <Filter>Source Files\localization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def">
@@ -70,8 +91,20 @@
     <ClInclude Include="include\system\time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MFC42Exports.hpp">
-      <Filter>Header Files\include</Filter>
+    <ClInclude Include="GameGlue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\system\FWinApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\system\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinProc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\localization\ConvertJKParser.h">
+      <Filter>Header Files\include\localization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

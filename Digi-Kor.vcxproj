@@ -130,23 +130,31 @@
     <ClCompile Include="ConfigINI.h" />
     <ClCompile Include="detouring.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Framework.cpp" />
     <ClCompile Include="hook_manager.cpp" />
+    <ClCompile Include="src\localization\ConvertJKParser.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\system\CRT.cpp" />
     <ClCompile Include="src\system\FWinApp.cpp" />
+    <ClCompile Include="src\system\Input.cpp" />
     <ClCompile Include="src\system\time.cpp" />
+    <ClCompile Include="WinProc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Detouring.hpp" />
+    <ClInclude Include="GameGlue.h" />
     <ClInclude Include="hook_manager.hpp" />
     <ClInclude Include="include\FunctionIncludes.h" />
+    <ClInclude Include="include\localization\ConvertJKParser.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\system\CRT.h" />
     <ClInclude Include="include\system\FWinApp.h" />
+    <ClInclude Include="include\system\Input.h" />
     <ClInclude Include="include\system\time.h" />
+    <ClInclude Include="WinProc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

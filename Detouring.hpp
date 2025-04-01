@@ -30,3 +30,5 @@ inline void* GetOriginalFunction(const char* name) {
 
 #define CALL_ORIGINAL(name, ...) \
     reinterpret_cast<decltype(&name)>(GetOriginalFunction(#name))(__VA_ARGS__)
+
+#define MEMBER_HOOK(cls, method) reinterpret_cast<void*>(&cls::method)

@@ -1,5 +1,8 @@
 #pragma once
 #include <windows.h>
+#include <iostream>
+#include <iomanip> // for std::hex and std::dec
+#include "GameGlue.h"
 
 class FWinThread {
 public:
@@ -14,12 +17,34 @@ public:
     }
 
     virtual int Run() {
-        MSG msg;
-        while (GetMessage(&msg, nullptr, 0, 0)) {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+        MSG msg = {};
+        std::cout << "[Run] Entering message + game loop.\n";
+
+        void* ctx = GetGameContext();
+
+        while (true) {
+            while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+                if (msg.message == WM_QUIT) {
+                    std::cout << "[Run] Exiting with code: " << msg.wParam << "\n";
+                    return static_cast<int>(msg.wParam);
+                }
+
+                if (msg.message != 0x00FF && msg.message != 0x00A0) {
+                    std::cout << "[Run] Msg: " << msg.message
+                        << " (0x" << std::hex << msg.message << std::dec << ")\n";
+                }
+
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+
+            // Run game logic even when idle
+            if (ctx) {
+                GameLoopTick(ctx);
+            }
+
+            RenderFrame(); // optional: if you want constant redraw
         }
-        return static_cast<int>(msg.wParam);
     }
 
     virtual ~FWinThread() = default;
