@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libMinHook-x86-v141-mdd.lib;</AdditionalDependencies>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libMinHook-x86-v141-mdd.lib;DbgHelp.lib</AdditionalDependencies>
       <OutputFile>E:\Digimon World PC\Install\D3D8.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
@@ -136,6 +136,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\render\TextRenderer.cpp" />
     <ClCompile Include="src\system\CRT.cpp" />
+    <ClCompile Include="src\system\ExceptionHandler.cpp" />
     <ClCompile Include="src\system\FWinApp.cpp" />
     <ClCompile Include="src\system\Input.cpp" />
     <ClCompile Include="src\system\time.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="include\MFC42.h" />
     <ClInclude Include="include\render\TextRenderer.h" />
     <ClInclude Include="include\system\CRT.h" />
+    <ClInclude Include="include\system\ExceptionHandler.h" />
     <ClInclude Include="include\system\FWinApp.h" />
     <ClInclude Include="include\system\Input.h" />
     <ClInclude Include="include\system\time.h" />

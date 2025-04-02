@@ -31,6 +31,12 @@
     <Filter Include="Source Files\src\localization">
       <UniqueIdentifier>{76875ccc-df2f-4738-953c-4d7590b6bc35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\system">
+      <UniqueIdentifier>{e8d47053-9b77-4ef7-b6c8-71c3a320f447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\system">
+      <UniqueIdentifier>{b19957c3-b18c-4789-a576-fc52cd00fd63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -51,16 +57,7 @@
     <ClCompile Include="hook_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\system\CRT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\system\time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\system\FWinApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\system\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WinProc.cpp">
@@ -74,6 +71,18 @@
     </ClCompile>
     <ClCompile Include="src\render\TextRenderer.cpp">
       <Filter>Source Files\src\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\CRT.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\time.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\Input.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\ExceptionHandler.cpp">
+      <Filter>Source Files\src\system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="include\MFC42.h">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\system\ExceptionHandler.h">
+      <Filter>Header Files\include\system</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
