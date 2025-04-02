@@ -2376,9 +2376,9 @@ Detouring detours[] = {
     { 0x004a1d02, "Ordinal_6779", false },
     { 0x004a1d08, "Ordinal_535", false },
     { 0x004a1d0e, "Ordinal_4129", false },
-    { 0x004a1d14, "Ordinal_5683", false },
-    { 0x004a1d20, "__CxxFrameHandler", false },
-    { 0x004a1d26, "FUN_004a1d26", false },
+    { 0x004a1d14, "Ordinal_5683", false },*/
+    //{ "__CxxFrameHandler", 0x004a1d20, reinterpret_cast<void*>(&HandleStructuredExceptionWithContext), HookType::CODE, false },
+    /*{0x004a1d26, "FUN_004a1d26", false},
     { 0x004a1d8e, "FUN_004a1d8e", false },
     { 0x004a1da6, "FUN_004a1da6", false },
     { 0x004a1e04, "FUN_004a1e04", false },

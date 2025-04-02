@@ -37,6 +37,9 @@
     <Filter Include="Header Files\include\system">
       <UniqueIdentifier>{b19957c3-b18c-4789-a576-fc52cd00fd63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\system\rendering">
+      <UniqueIdentifier>{80afe317-ca0f-4690-a072-ca02eee49249}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="src\system\ExceptionHandler.cpp">
       <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\rendering\win32.cpp">
+      <Filter>Source Files\src\system\rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

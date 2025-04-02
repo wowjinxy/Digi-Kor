@@ -5,14 +5,20 @@
 #include "hook_manager.hpp"
 #include "ConfigINI.h"
 #include <Detouring.hpp>
+#include <FunctionIncludes.h>
 
 FARPROC p[3] = { 0 };
 
+void causeCrash() {
+    int* ptr = nullptr;
+    *ptr = 0xDEAD;
+}
+
 void CreateConsole() {
     AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
-    freopen("CONIN$", "r", stdin);
+    //freopen("CONOUT$", "w", stdout);
+    //freopen("CONOUT$", "w", stderr);
+    //freopen("CONIN$", "r", stdin);
 
     std::ios::sync_with_stdio();
 
@@ -93,6 +99,8 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         ApplyNoCD();
         InitializeHooks(hInst);
 
+        InitCrashHandler();
+        causeCrash();
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);

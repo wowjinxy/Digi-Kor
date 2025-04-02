@@ -139,6 +139,7 @@
     <ClCompile Include="src\system\ExceptionHandler.cpp" />
     <ClCompile Include="src\system\FWinApp.cpp" />
     <ClCompile Include="src\system\Input.cpp" />
+    <ClCompile Include="src\system\rendering\win32.cpp" />
     <ClCompile Include="src\system\time.cpp" />
     <ClCompile Include="WinProc.cpp" />
   </ItemGroup>

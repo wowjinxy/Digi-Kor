@@ -18,4 +18,9 @@ void HandleStructuredExceptionWithContext(
 );
 
 // Macro to auto-fill call-site info
-#define HANDLE_EXCEPTION(msg) HandleStructuredExceptionWithContext(__FILE__, __FUNCTION__, __LINE__, msg)
+#define HANDLE_EXCEPTION(msg)                           \
+    do {                                                \
+        HandleStructuredExceptionWithContext(           \
+            __FILE__, __FUNCTION__, __LINE__, msg);     \
+        TriggerSEH();                                   \
+    } while(0)
