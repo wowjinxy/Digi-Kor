@@ -9,16 +9,13 @@
 
 FARPROC p[3] = { 0 };
 
-void causeCrash() {
-    int* ptr = nullptr;
-    *ptr = 0xDEAD;
-}
+ConfigINI config("config.ini");
 
 void CreateConsole() {
     AllocConsole();
-    //freopen("CONOUT$", "w", stdout);
-    //freopen("CONOUT$", "w", stderr);
-    //freopen("CONIN$", "r", stdin);
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
+    freopen("CONIN$", "r", stdin);
 
     std::ios::sync_with_stdio();
 
@@ -70,13 +67,22 @@ void ApplyDisplaySettings(const ConfigINI& config) {
         dm.dmPelsHeight = config.getInt("Display", "Height", 480);
         dm.dmBitsPerPel = 32;
 
-        if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL) {
-            std::cout << "[+] Fullscreen mode set to " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << "\n";
-        }
-        else {
-            std::cerr << "[-] Failed to set fullscreen display mode.\n";
-        }
+        //if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL) {
+            //std::cout << "[+] Fullscreen mode set to " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << "\n";
+        //}
+        //else {
+            //std::cerr << "[-] Failed to set fullscreen display mode.\n";
+        //}
     }
+}
+
+DWORD WINAPI DeferredStartup(LPVOID)
+{
+    CreateConsole();
+    ApplyDisplaySettings(config);
+    InitializeHooks(GetModuleHandle(nullptr));
+    InitCrashHandler();
+    return 0;
 }
 
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
@@ -91,16 +97,10 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         p[2] = GetProcAddress(hL, "ValidateVertexShader");
 
         DisableThreadLibraryCalls(hInst);
-        CreateConsole();
-
-        ConfigINI config("config.ini");
-        ApplyDisplaySettings(config);
-
+        
         ApplyNoCD();
-        InitializeHooks(hInst);
 
-        InitCrashHandler();
-        causeCrash();
+        CreateThread(0, 0, DeferredStartup, 0, 0, 0);
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
