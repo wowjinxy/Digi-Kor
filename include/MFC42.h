@@ -98,94 +98,102 @@ struct CCreateContext {
 // ------------------------------------
 // Global MFC function pointers
 // ------------------------------------
-inline CCmdTarget* (__cdecl* AfxGetModuleState)() = reinterpret_cast<CCmdTarget * (__cdecl*)()>(0xDEADBEEF);
-inline CWinThread* (__cdecl* AfxGetThread)() = reinterpret_cast<CWinThread * (__cdecl*)()>(0xDEADBEEF);
-inline LPCSTR(__cdecl* AfxRegisterWndClass)(UINT, HCURSOR, HBRUSH, HICON) = reinterpret_cast<LPCSTR(__cdecl*)(UINT, HCURSOR, HBRUSH, HICON)>(0xDEADBEEF);
+inline CCmdTarget* (__cdecl* AfxGetModuleState)() = reinterpret_cast<CCmdTarget * (__cdecl*)()>(0x004a1b3a);
+inline CWinThread* (__cdecl* AfxGetThread)() = reinterpret_cast<CWinThread * (__cdecl*)()>(0x004a1b2e);
+inline LPCSTR(__cdecl* AfxRegisterWndClass)(UINT, HCURSOR, HBRUSH, HICON) = reinterpret_cast<LPCSTR(__cdecl*)(UINT, HCURSOR, HBRUSH, HICON)>(0x004a1c48);
 
 // ------------------------------------
 // Memory management
 // ------------------------------------
-inline void* (__cdecl* Alloc)(size_t) = reinterpret_cast<void* (__cdecl*)(size_t)>(0xDEADBEEF);
-inline void (*FreeFileBuffer)(void*) = reinterpret_cast<void(*)(void*)>(0xDEADBEEF);
+inline void* (__cdecl* Alloc)(size_t) = reinterpret_cast<void* (__cdecl*)(size_t)>(0x004a1a3e);
+inline void (*FreeFileBuffer)(void*) = reinterpret_cast<void(*)(void*)>(0x004a1a26);
 
 // ------------------------------------
 // CCmdTarget methods
 // ------------------------------------
 using CCmdTarget_GetCommandMap_t = const AFX_MSGMAP* (__thiscall*)(CCmdTarget*);
 inline CCmdTarget_GetCommandMap_t CCmdTarget_GetCommandMap =
-reinterpret_cast<CCmdTarget_GetCommandMap_t>(0xDEADBEEF);
+reinterpret_cast<CCmdTarget_GetCommandMap_t>(0x004a1ada);
 
 using CCmdTarget_GetConnectionHook_t = HRESULT(__thiscall*)(CCmdTarget*, const IID&, void**);
 inline CCmdTarget_GetConnectionHook_t CCmdTarget_GetConnectionHook =
-reinterpret_cast<CCmdTarget_GetConnectionHook_t>(0xDEADBEEF);
+reinterpret_cast<CCmdTarget_GetConnectionHook_t>(0x004a1aaa);
 
 // ------------------------------------
 // CDC methods
 // ------------------------------------
 using CDC_Attach_t = BOOL(__thiscall*)(CDC*, HDC);
 inline CDC_Attach_t CDC_Attach =
-reinterpret_cast<CDC_Attach_t>(0xDEADBEEF);
+reinterpret_cast<CDC_Attach_t>(0x004a1cd8);
 
 using CDC_DeleteDC_t = BOOL(__thiscall*)(CDC*);
 inline CDC_DeleteDC_t CDC_DeleteDC =
-reinterpret_cast<CDC_DeleteDC_t>(0xDEADBEEF);
+reinterpret_cast<CDC_DeleteDC_t>(0x004a1ce4);
 
 using CDC_SelectObject_t = HGDIOBJ(__thiscall*)(CDC*, HGDIOBJ);
 inline CDC_SelectObject_t CDC_SelectObject =
-reinterpret_cast<CDC_SelectObject_t>(0xDEADBEEF);
+reinterpret_cast<CDC_SelectObject_t>(0x004a1ccc);
 
 // ------------------------------------
 // CFile methods
 // ------------------------------------
 using CFile_Close_t = void(__thiscall*)(CFile*);
 inline CFile_Close_t CFile_Close =
-reinterpret_cast<CFile_Close_t>(0xDEADBEEF);
+reinterpret_cast<CFile_Close_t>(0x004a1c90);
 
 // ------------------------------------
 // CFrameWnd methods
 // ------------------------------------
 using CFrameWnd_ActivateFrame_t = void(__thiscall*)(CFrameWnd*, int);
 inline CFrameWnd_ActivateFrame_t CFrameWnd_ActivateFrame =
-reinterpret_cast<CFrameWnd_ActivateFrame_t>(0xDEADBEEF);
+reinterpret_cast<CFrameWnd_ActivateFrame_t>(0x004a1b7c);
 
 // ------------------------------------
 // CString methods
 // ------------------------------------
-using CString_ctor1_t = CString * (__thiscall*)(CString*, LPCSTR);
-inline CString_ctor1_t CString_ctor1 =
-reinterpret_cast<CString_ctor1_t>(0xDEADBEEF);
+// CString(LPCSTR)
+using CString_ctor_from_LPCSTR_t = CString * (__thiscall*)(CString*, LPCSTR);
+inline CString_ctor_from_LPCSTR_t CString_ctor_from_LPCSTR =
+reinterpret_cast<CString_ctor_from_LPCSTR_t>(0x004a1d08);  // Ordinal_535
 
-using CString_operator_assign_t = CString & (__thiscall*)(CString*, LPCSTR);
-inline CString_operator_assign_t CString_operator_assign =
-reinterpret_cast<CString_operator_assign_t>(0xDEADBEEF);
+// CString(const CString&)
+using CString_ctor_copy_t = CString * (__thiscall*)(CString*, const CString&);
+inline CString_ctor_copy_t CString_ctor_copy =
+reinterpret_cast<CString_ctor_copy_t>(0x004a1b40);  // Ordinal_537
+
+// CString()
+using CString_ctor_default_t = CString * (__thiscall*)(CString*);
+inline CString_ctor_default_t CString_ctor_default =
+reinterpret_cast<CString_ctor_default_t>(0x004a1a38);  // Ordinal_540
+
+
+using CString_operator_divide_t = CString & (__thiscall*)(CString*, LPCSTR);
+inline CString_operator_divide_t CString_operator_divide =
+reinterpret_cast<CString_operator_divide_t>(0x004a1b34);  // Ordinal_860
+
+using CString_operator_assign_858_t = CString & (__thiscall*)(CString*, LPCSTR);
+inline CString_operator_assign_858_t CString_operator_assign_858 =
+reinterpret_cast<CString_operator_assign_858_t>(0x004a1a44);  // Ordinal_858
 
 // ------------------------------------
 // CWinApp methods
 // ------------------------------------
 using CWinApp_AddToRecentFileList_t = void(__thiscall*)(CWinApp*, LPCTSTR);
 inline CWinApp_AddToRecentFileList_t CWinApp_AddToRecentFileList =
-reinterpret_cast<CWinApp_AddToRecentFileList_t>(0xDEADBEEF);
+reinterpret_cast<CWinApp_AddToRecentFileList_t>(0x004a1a6e);
 
 // ------------------------------------
 // CWnd methods
 // ------------------------------------
 using CWnd_CalcWindowRect_t = void(__thiscall*)(CWnd*, LPRECT, UINT);
 inline CWnd_CalcWindowRect_t CWnd_CalcWindowRect =
-reinterpret_cast<CWnd_CalcWindowRect_t>(0xDEADBEEF);
+reinterpret_cast<CWnd_CalcWindowRect_t>(0x004a1c18);
 
 using CWnd_Create_t = BOOL(__thiscall*)(CWnd*, LPCTSTR, LPCTSTR, DWORD, const RECT&, CWnd*, UINT, CCreateContext*);
 inline CWnd_Create_t CWnd_Create =
-reinterpret_cast<CWnd_Create_t>(0xDEADBEEF);
+reinterpret_cast<CWnd_Create_t>(0x004a1c24);
 
 // ------------------------------------
 // Application entry point
 // ------------------------------------
-inline int(__cdecl* MFC_WinMain)(HINSTANCE, HINSTANCE, LPSTR, int) = reinterpret_cast<int(__cdecl*)(HINSTANCE, HINSTANCE, LPSTR, int)>(0xDEADBEEF);
-
-// ------------------------------------
-// Utility template
-// ------------------------------------
-template<typename T>
-inline void AddToStructure(int base, int count, T* value) {
-    reinterpret_cast<void(*)(int, int, T*)>(0x0043E850)(base, count, value);
-}
+inline int(__cdecl* MFC_WinMain)(HINSTANCE, HINSTANCE, LPSTR, int) = reinterpret_cast<int(__cdecl*)(HINSTANCE, HINSTANCE, LPSTR, int)>(0x004a21f4);
