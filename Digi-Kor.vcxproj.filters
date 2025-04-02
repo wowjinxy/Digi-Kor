@@ -118,5 +118,8 @@
     <ClInclude Include="include\render\TextRenderer.h">
       <Filter>Header Files\include\render</Filter>
     </ClInclude>
+    <ClInclude Include="include\MFC42.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

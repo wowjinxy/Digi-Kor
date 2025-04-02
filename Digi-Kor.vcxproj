@@ -151,6 +151,7 @@
     <ClInclude Include="include\FunctionIncludes.h" />
     <ClInclude Include="include\localization\ConvertJKParser.h" />
     <ClInclude Include="include\main.h" />
+    <ClInclude Include="include\MFC42.h" />
     <ClInclude Include="include\render\TextRenderer.h" />
     <ClInclude Include="include\system\CRT.h" />
     <ClInclude Include="include\system\FWinApp.h" />
