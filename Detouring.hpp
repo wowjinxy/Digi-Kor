@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <cstring>
+#include <windows.h>
 
 enum class HookType { AUTO, CODE, IAT };
 
@@ -32,3 +33,15 @@ inline void* GetOriginalFunction(const char* name) {
     reinterpret_cast<decltype(&name)>(GetOriginalFunction(#name))(__VA_ARGS__)
 
 #define MEMBER_HOOK(cls, method) reinterpret_cast<void*>(&cls::method)
+
+#define PATCH_STR PatchString
+inline void PatchString(uintptr_t targetPtr, const char* replacementText) {
+    char* persistentCopy = _strdup(replacementText);  // Allocated on heap
+    DWORD oldProtect;
+
+    if (VirtualProtect(reinterpret_cast<void*>(targetPtr), sizeof(const char*), PAGE_EXECUTE_READWRITE, &oldProtect)) {
+        *reinterpret_cast<const char**>(targetPtr) = persistentCopy;
+        VirtualProtect(reinterpret_cast<void*>(targetPtr), sizeof(const char*), oldProtect, &oldProtect);
+    }
+}
+

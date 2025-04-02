@@ -568,9 +568,9 @@ Detouring detours[] = {
     { 0x00428e60, "FUN_00428e60", false },
     { 0x00428ee0, "ProcessFontsAndMetrics", false },
     { 0x004290c0, "FUN_004290c0", false },
-    { 0x00429130, "FUN_00429130", false },
-    { 0x00429170, "renderString", false },
-    { 0x004291e0, "FUN_004291e0", false },
+    { 0x00429130, "FUN_00429130", false },*/
+    { "origRenderString", 0x00429170, reinterpret_cast<void*>(&Hook_MeasureStringDimensions), HookType::CODE, false },
+    /*{0x004291e0, "FUN_004291e0", false},
     { 0x00429240, "FUN_00429240", false },
     { 0x004292b0, "FUN_004292b0", false },
     { 0x004292d0, "FUN_004292d0", false },

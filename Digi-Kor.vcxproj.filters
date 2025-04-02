@@ -19,11 +19,17 @@
     <Filter Include="Header Files\include">
       <UniqueIdentifier>{315aa4c4-3580-4c67-811d-84f99a31fb7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\localization">
-      <UniqueIdentifier>{76875ccc-df2f-4738-953c-4d7590b6bc35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\include\localization">
       <UniqueIdentifier>{1f6923ff-2435-49c9-adf2-5e3473d01b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\render">
+      <UniqueIdentifier>{72e23515-8be9-4608-8930-08f8b6899cdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\render">
+      <UniqueIdentifier>{80731441-3436-4b76-853e-d0f4d41bb312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\localization">
+      <UniqueIdentifier>{76875ccc-df2f-4738-953c-4d7590b6bc35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +70,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\localization\ConvertJKParser.cpp">
-      <Filter>Source Files\localization</Filter>
+      <Filter>Source Files\src\localization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\TextRenderer.cpp">
+      <Filter>Source Files\src\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +114,9 @@
     </ClInclude>
     <ClInclude Include="include\localization\ConvertJKParser.h">
       <Filter>Header Files\include\localization</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\TextRenderer.h">
+      <Filter>Header Files\include\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

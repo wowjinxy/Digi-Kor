@@ -4,6 +4,7 @@
 #include <cstdio>
 #include "hook_manager.hpp"
 #include "ConfigINI.h"
+#include <Detouring.hpp>
 
 FARPROC p[3] = { 0 };
 
@@ -92,9 +93,6 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         ApplyNoCD();
         InitializeHooks(hInst);
 
-        //if (!LoadMFC42()) {
-            //return FALSE;
-        //}
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
