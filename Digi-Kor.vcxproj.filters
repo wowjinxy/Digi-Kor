@@ -40,6 +40,12 @@
     <Filter Include="Source Files\src\system\rendering">
       <UniqueIdentifier>{80afe317-ca0f-4690-a072-ca02eee49249}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Cicada">
+      <UniqueIdentifier>{44b3b2b3-1fbd-4e7c-859f-5efae021a39d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cicada">
+      <UniqueIdentifier>{60406c6f-1ab0-4344-9a91-23f429738978}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -90,6 +96,9 @@
     <ClCompile Include="src\system\rendering\win32.cpp">
       <Filter>Source Files\src\system\rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Cicada\Cicada.cpp">
+      <Filter>Source Files\Cicada</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def">
@@ -138,6 +147,12 @@
     </ClInclude>
     <ClInclude Include="include\system\ExceptionHandler.h">
       <Filter>Header Files\include\system</Filter>
+    </ClInclude>
+    <ClInclude Include="Cicada\Cicada.hpp">
+      <Filter>Header Files\Cicada</Filter>
+    </ClInclude>
+    <ClInclude Include="CicadaHooks.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

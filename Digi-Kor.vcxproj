@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cicada\Cicada.cpp" />
     <ClCompile Include="ConfigINI.cpp" />
     <ClCompile Include="ConfigINI.h" />
     <ClCompile Include="detouring.cpp" />
@@ -147,6 +148,8 @@
     <None Include="D3D8.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CicadaHooks.hpp" />
+    <ClInclude Include="Cicada\Cicada.hpp" />
     <ClInclude Include="Detouring.hpp" />
     <ClInclude Include="GameGlue.h" />
     <ClInclude Include="hook_manager.hpp" />
