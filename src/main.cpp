@@ -4,7 +4,6 @@
 #include <iostream>
 #include <gl/GL.h>
 #include <windows.h>
-#include <Detouring.hpp>
 #include <cstring>
 #include <cassert>
 #include <fstream>

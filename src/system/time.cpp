@@ -3,7 +3,6 @@
 
 #include "system/time.h"
 #include <iostream>
-#include <Detouring.hpp>
 
 DWORD __stdcall timeGetTime()
 {

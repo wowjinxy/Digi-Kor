@@ -126,10 +126,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CicadaHooks.cpp" />
     <ClCompile Include="Cicada\Cicada.cpp" />
     <ClCompile Include="ConfigINI.cpp" />
     <ClCompile Include="ConfigINI.h" />
-    <ClCompile Include="detouring.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="hook_manager.cpp" />
@@ -150,10 +150,9 @@
   <ItemGroup>
     <ClInclude Include="CicadaHooks.hpp" />
     <ClInclude Include="Cicada\Cicada.hpp" />
-    <ClInclude Include="Detouring.hpp" />
     <ClInclude Include="GameGlue.h" />
     <ClInclude Include="hook_manager.hpp" />
-    <ClInclude Include="include\FunctionIncludes.h" />
+    <ClInclude Include="include\HookEntryPoints.hpp" />
     <ClInclude Include="include\localization\ConvertJKParser.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\MFC42.h" />

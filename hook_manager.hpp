@@ -1,5 +1,5 @@
 #pragma once
 #include <wtypes.h>
 
-bool InitializeHooks(HINSTANCE hInst);
+void InitializeHooks(HMODULE /*module*/);
 void ShutdownHooks();

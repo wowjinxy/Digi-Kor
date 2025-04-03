@@ -2,13 +2,13 @@
 #include <tchar.h>
 #include <iostream>
 #include <cstdio>
-#include "hook_manager.hpp"
+#include <Cicada/Cicada.hpp>
+#include "CicadaHooks.hpp"
 #include "ConfigINI.h"
-#include <Detouring.hpp>
-#include <FunctionIncludes.h>
+#include "HookEntryPoints.hpp"
+#include <hook_manager.hpp>
 
 FARPROC p[3] = { 0 };
-
 ConfigINI config("config.ini");
 
 void CreateConsole() {
@@ -16,7 +16,6 @@ void CreateConsole() {
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
     freopen("CONIN$", "r", stdin);
-
     std::ios::sync_with_stdio();
 
     std::cout << R"(
@@ -67,20 +66,15 @@ void ApplyDisplaySettings(const ConfigINI& config) {
         dm.dmPelsHeight = config.getInt("Display", "Height", 480);
         dm.dmBitsPerPel = 32;
 
-        //if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL) {
-            //std::cout << "[+] Fullscreen mode set to " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << "\n";
-        //}
-        //else {
-            //std::cerr << "[-] Failed to set fullscreen display mode.\n";
-        //}
+        // Optionally uncomment this if fullscreen patching is needed
+        // ChangeDisplaySettings(&dm, CDS_FULLSCREEN);
     }
 }
 
-DWORD WINAPI DeferredStartup(LPVOID)
-{
+DWORD WINAPI DeferredStartup(LPVOID) {
     CreateConsole();
     ApplyDisplaySettings(config);
-    InitializeHooks(GetModuleHandle(nullptr));
+    Cicada::ApplyAllHooks(); // << This is where all your hook magic happens
     InitCrashHandler();
     return 0;
 }
@@ -97,14 +91,14 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
         p[2] = GetProcAddress(hL, "ValidateVertexShader");
 
         DisableThreadLibraryCalls(hInst);
-        
+
         ApplyNoCD();
 
         CreateThread(0, 0, DeferredStartup, 0, 0, 0);
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
-        ShutdownHooks();
+        ShutdownHooks(); // If you have cleanup hooks
     }
 
     return TRUE;

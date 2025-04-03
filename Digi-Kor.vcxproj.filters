@@ -60,9 +60,6 @@
     <ClCompile Include="ConfigINI.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="detouring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hook_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +96,9 @@
     <ClCompile Include="Cicada\Cicada.cpp">
       <Filter>Source Files\Cicada</Filter>
     </ClCompile>
+    <ClCompile Include="CicadaHooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def">
@@ -109,13 +109,10 @@
     <ClInclude Include="include\main.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="Detouring.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="hook_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\FunctionIncludes.h">
+    <ClInclude Include="include\HookEntryPoints.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\system\CRT.h">

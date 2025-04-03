@@ -1,6 +1,5 @@
 #include <wtypes.h>
 #include <ConfigINI.h>
-#include <Detouring.hpp>
 
 typedef BOOL(__fastcall* CWndShowWindowReal)(void* thisPtr, int, int);
 CWndShowWindowReal OriginalShowWindow = nullptr;
