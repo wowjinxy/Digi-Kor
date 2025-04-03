@@ -85,5 +85,5 @@ public:
     virtual ~FWinApp() = default;
 };
 
-extern "C" __declspec(dllexport) FWinThread* AfxGetThread();
-extern "C" __declspec(dllexport) FWinApp* AfxGetApp();
+//extern "C" __declspec(dllexport) FWinThread* AfxGetThread();
+//extern "C" __declspec(dllexport) FWinApp* AfxGetApp();

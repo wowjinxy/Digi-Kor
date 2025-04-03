@@ -8,6 +8,7 @@
 #include <cassert>
 #include <fstream>
 #include "GameGlue.h"
+#include "MFC42.h"
 
 AppGlobalStruct* g_AppGlobal = reinterpret_cast<AppGlobalStruct*>(0x004c93d0);
 
@@ -119,48 +120,10 @@ int RunOpenGLLoop()
     return 0;
 }
 
-using AllocFunc = void* (__cdecl*)(size_t);
-using InitRendererFunc = void* (__fastcall*)(void*);
-
-// Pointers to original game functions
-AllocFunc GameAlloc = reinterpret_cast<AllocFunc>(0x004a7274);
-InitRendererFunc InitializeRenderer = reinterpret_cast<InitRendererFunc>(0x0040e950);
-
-int __stdcall AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPTSTR lpCmdLine, int nCmdShow)
 {
-    assert(hPrevInstance == NULL);
-
-    std::ofstream logFile("HookyLog.txt");
-    std::cout.rdbuf(logFile.rdbuf()); // Redirect all std::cout to the file
-
-    int nReturnCode = -1;
-    FWinThread* pThread = AfxGetThread();
-
-    // Create our own window
-    HWND hWnd = CreateSimpleWindow(hInstance);
-    if (!hWnd || !InitOpenGL(hWnd)) {
-        MessageBoxA(nullptr, "Failed to create OpenGL context or window!", "Error", MB_ICONERROR);
-        return -1;
-    }
-
-    // Assign to main window handle
-    pThread->m_pMainWnd = hWnd;
-
-    // --- Allocate game memory and initialize its renderer ---
-    void* rendererStruct = VirtualAlloc(nullptr, 0x20000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-    if (!rendererStruct) {
-        MessageBoxA(nullptr, "GameAlloc failed!", "Error", MB_ICONERROR);
-        return -1;
-    }
-
-    //void* gameContext = InitializeRenderer(rendererStruct);
-    //g_AppGlobal->gameContext = gameContext;
-
-    g_AppGlobal->gameContext = InitializeRenderer(rendererStruct);
-
-    RunGameLoop(g_AppGlobal);
-    return 0;
-    //return RunOpenGLLoop();
-    //return pThread->Run(); // Enters our OpenGL + GameLoopTick loop
+	bool didInit;
+    didInit = (MFC_WinMain(hInstance, hPrevInstance, (LPSTR)lpCmdLine, nCmdShow));
+    return didInit;
 }

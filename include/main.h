@@ -32,7 +32,7 @@ extern GameLoopFunc GameLoopTick;
 // Hook replacements
 //extern "C" __declspec(dllexport) bool __stdcall MyCWndCreateHook(HWND hWnd);
 //extern "C" __declspec(dllexport) bool __stdcall CWndCreateThunk(HWND hWnd);
-int __stdcall AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPTSTR lpCmdLine, int nCmdShow);
 
 #pragma comment(lib, "opengl32.lib")
