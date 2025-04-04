@@ -35,10 +35,21 @@ namespace Cicada {
 #define CALL_ORIG_GENERIC(name, ret_type, ...) \
     reinterpret_cast<ret_type(*)(__VA_ARGS__)>(Cicada::GetOriginalFunction(name))
 
-// Templated original function getter (cleaner for advanced users)
+    // Templated original function getter (cleaner for advanced users)
     template <typename T>
     inline T GetOriginalAs(const char* name) {
         return reinterpret_cast<T>(GetOriginalFunction(name));
     }
 
+    // === Utility: Call a DLL function already loaded by the EXE ===
+    inline FARPROC GetProcFromLoadedModule(const char* moduleName, const char* functionName) {
+        HMODULE mod = GetModuleHandleA(moduleName);
+        return mod ? GetProcAddress(mod, functionName) : nullptr;
+    }
+
+#define GET_EXE_IMPORT(mod, name, type) \
+    reinterpret_cast<type>(Cicada::GetProcFromLoadedModule(mod, name))
+
 } // namespace Cicada
+
+typedef unsigned int uint;

@@ -197,3 +197,21 @@ reinterpret_cast<CWnd_Create_t>(0x004a1c24);
 // Application entry point
 // ------------------------------------
 inline int(__cdecl* MFC_WinMain)(HINSTANCE, HINSTANCE, LPSTR, int) = reinterpret_cast<int(__cdecl*)(HINSTANCE, HINSTANCE, LPSTR, int)>(0x004a21f4);
+
+using CWnd_MoveWindow_t = BOOL(__thiscall*)(CWnd*, int x, int y, int w, int h, BOOL repaint);
+inline CWnd_MoveWindow_t CWnd_MoveWindow = reinterpret_cast<CWnd_MoveWindow_t>(0x004a1c60);
+
+using CWnd_CenterWindow_t = BOOL(__thiscall*)(CWnd*);
+inline CWnd_CenterWindow_t CWnd_CenterWindow = reinterpret_cast<CWnd_CenterWindow_t>(0x004a1c5a);
+
+using CWnd_SetFocus_t = void(__thiscall*)(CWnd*);
+inline CWnd_SetFocus_t CWnd_SetFocus =
+reinterpret_cast<CWnd_SetFocus_t>(0x004a1c54);
+
+using CFrameWnd_OnCreate_t = int(__thiscall*)(void* pThis);
+inline CFrameWnd_OnCreate_t CFrameWnd_OnCreate =
+reinterpret_cast<CFrameWnd_OnCreate_t>(0x004a1c6c);
+
+using CWnd_GetStyle_t = DWORD(__thiscall*)(CWnd* pThis);
+inline CWnd_GetStyle_t CWnd_GetStyle =
+reinterpret_cast<CWnd_GetStyle_t>(0x004a1c66);

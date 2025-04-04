@@ -8,7 +8,7 @@
 #include <cassert>
 #include <fstream>
 #include "GameGlue.h"
-#include "MFC42.h"
+#include "MFC42.hpp"
 
 AppGlobalStruct* g_AppGlobal = reinterpret_cast<AppGlobalStruct*>(0x004c93d0);
 

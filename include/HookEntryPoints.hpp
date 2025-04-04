@@ -14,4 +14,5 @@
 #include "localization/ConvertJKParser.h"
 
 // 🖋️ Rendering + UI
+#include "CDWWnd.hpp"
 #include "render/TextRenderer.h"

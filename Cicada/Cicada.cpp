@@ -14,10 +14,9 @@ namespace Cicada {
     }
 
     void PatchString(uintptr_t target, const char* replacement) {
-        char* persistentCopy = _strdup(replacement);
         DWORD oldProtect;
         if (VirtualProtect(reinterpret_cast<void*>(target), sizeof(const char*), PAGE_EXECUTE_READWRITE, &oldProtect)) {
-            *reinterpret_cast<const char**>(target) = persistentCopy;
+            *reinterpret_cast<const char**>(target) = replacement;
             VirtualProtect(reinterpret_cast<void*>(target), sizeof(const char*), oldProtect, &oldProtect);
         }
     }

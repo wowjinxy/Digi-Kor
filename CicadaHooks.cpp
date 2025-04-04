@@ -3,6 +3,7 @@
 
 namespace Cicada {
     Hook hooks[] = {
+        //{ "CDWWndOnCreate",       0x0040EA90, reinterpret_cast<void*>(&CDWWnd::OnCreate),     HookType::CODE, true  },
         { "InitializeFrameTimer", 0x00410d40, reinterpret_cast<void*>(&InitializeFrameTimer), HookType::CODE, false },
         { "origReadEntireFile",   0x0041a0c0, reinterpret_cast<void*>(&ReadEntireFile),       HookType::CODE, true  },
         { "MFC43WinMain",         0x004a21f4, reinterpret_cast<void*>(&DigiMain),             HookType::CODE, true  },

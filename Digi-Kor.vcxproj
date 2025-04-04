@@ -135,6 +135,7 @@
     <ClCompile Include="hook_manager.cpp" />
     <ClCompile Include="src\localization\ConvertJKParser.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\render\CDWWnd.cpp" />
     <ClCompile Include="src\render\TextRenderer.cpp" />
     <ClCompile Include="src\system\CRT.cpp" />
     <ClCompile Include="src\system\ExceptionHandler.cpp" />
@@ -152,16 +153,18 @@
     <ClInclude Include="Cicada\Cicada.hpp" />
     <ClInclude Include="GameGlue.h" />
     <ClInclude Include="hook_manager.hpp" />
+    <ClInclude Include="include\CDWWnd.hpp" />
     <ClInclude Include="include\HookEntryPoints.hpp" />
     <ClInclude Include="include\localization\ConvertJKParser.h" />
     <ClInclude Include="include\main.h" />
-    <ClInclude Include="include\MFC42.h" />
+    <ClInclude Include="include\MFC42.hpp" />
     <ClInclude Include="include\render\TextRenderer.h" />
     <ClInclude Include="include\system\CRT.h" />
     <ClInclude Include="include\system\ExceptionHandler.h" />
     <ClInclude Include="include\system\FWinApp.h" />
     <ClInclude Include="include\system\Input.h" />
     <ClInclude Include="include\system\time.h" />
+    <ClInclude Include="include\USER32.hpp" />
     <ClInclude Include="WinProc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

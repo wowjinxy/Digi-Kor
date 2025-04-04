@@ -99,6 +99,9 @@
     <ClCompile Include="CicadaHooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\CDWWnd.cpp">
+      <Filter>Source Files\src\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def">
@@ -139,7 +142,7 @@
     <ClInclude Include="include\render\TextRenderer.h">
       <Filter>Header Files\include\render</Filter>
     </ClInclude>
-    <ClInclude Include="include\MFC42.h">
+    <ClInclude Include="include\MFC42.hpp">
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="include\system\ExceptionHandler.h">
@@ -150,6 +153,12 @@
     </ClInclude>
     <ClInclude Include="CicadaHooks.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\USER32.hpp">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CDWWnd.hpp">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
