@@ -15,4 +15,5 @@
 
 // 🖋️ Rendering + UI
 #include "CDWWnd.hpp"
+#include "SDL2.hpp"
 #include "render/TextRenderer.h"

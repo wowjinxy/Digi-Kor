@@ -5,4 +5,5 @@
 namespace Cicada {
     extern Hook hooks[];
     extern const size_t hookCount;
+    void RegisterCallsiteHooks();
 }

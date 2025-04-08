@@ -102,11 +102,15 @@
     <ClCompile Include="src\render\CDWWnd.cpp">
       <Filter>Source Files\src\render</Filter>
     </ClCompile>
+    <ClCompile Include="SDL2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="D3D8.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\main.h">
@@ -159,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="include\CDWWnd.hpp">
       <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL2.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
