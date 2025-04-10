@@ -10,6 +10,7 @@
 #include "GameGlue.h"
 #include "MFC42.hpp"
 #include <mbctype.h>
+#include <DigimonApp.hpp>
 
 AppGlobalStruct* g_AppGlobal = reinterpret_cast<AppGlobalStruct*>(0x004c93d0);
 
@@ -121,12 +122,21 @@ int RunOpenGLLoop()
     return 0;
 }
 
+#ifdef STANDALONE
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+    LPTSTR lpCmdLine, int nCmdShow)
+#else 
 int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPTSTR lpCmdLine, int nCmdShow)
+#endif
 {
-	bool didInit;
-    didInit = (MFC_WinMain(hInstance, hPrevInstance, (LPSTR)lpCmdLine, nCmdShow));
-    return didInit;
+    if (!g_App.Initialize()) {
+        return -1;
+    }
+
+    g_App.Run();
+    g_App.Shutdown();
+    return 0;
 }
 
 int SetModuleStateAndCodePage(bool enableFlag, int codePage)

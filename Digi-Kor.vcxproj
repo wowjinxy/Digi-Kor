@@ -134,9 +134,10 @@
     <ClCompile Include="Cicada\Cicada.cpp" />
     <ClCompile Include="ConfigINI.cpp" />
     <ClCompile Include="ConfigINI.h" />
+    <ClCompile Include="DigimonApp.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Framework.cpp" />
     <ClCompile Include="hook_manager.cpp" />
+    <ClCompile Include="rendering\OpenGL.cpp" />
     <ClCompile Include="SDL2.cpp" />
     <ClCompile Include="src\localization\ConvertJKParser.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -144,10 +145,11 @@
     <ClCompile Include="src\render\TextRenderer.cpp" />
     <ClCompile Include="src\system\CRT.cpp" />
     <ClCompile Include="src\system\ExceptionHandler.cpp" />
-    <ClCompile Include="src\system\FWinApp.cpp" />
     <ClCompile Include="src\system\Input.cpp" />
     <ClCompile Include="src\system\rendering\win32.cpp" />
     <ClCompile Include="src\system\time.cpp" />
+    <ClCompile Include="system\Shutdown.cpp" />
+    <ClCompile Include="system\TimSystem.cpp" />
     <ClCompile Include="WinProc.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="CicadaHooks.hpp" />
     <ClInclude Include="Cicada\Cicada.hpp" />
+    <ClInclude Include="DigimonApp.hpp" />
     <ClInclude Include="GameGlue.h" />
     <ClInclude Include="hook_manager.hpp" />
     <ClInclude Include="include\CDWWnd.hpp" />
@@ -171,7 +174,10 @@
     <ClInclude Include="include\system\Input.h" />
     <ClInclude Include="include\system\time.h" />
     <ClInclude Include="include\USER32.hpp" />
+    <ClInclude Include="rendering\Renderer.hpp" />
     <ClInclude Include="SDL2.hpp" />
+    <ClInclude Include="system\Shutdown.hpp" />
+    <ClInclude Include="system\TimSystem.hpp" />
     <ClInclude Include="WinProc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
