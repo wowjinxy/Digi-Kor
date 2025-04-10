@@ -22,6 +22,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int RunOpenGLLoop();
 
+int SetModuleStateAndCodePage(bool enableFlag, int codePage);
+
 // Declare the function pointer type
 using GameLoopFunc = void(__fastcall*)(void*);
 using MessageLoopFunc = void(__fastcall*)(void*);

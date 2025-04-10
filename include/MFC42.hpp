@@ -51,6 +51,15 @@ struct AFX_MSGMAP {
     const AFX_MSGMAP_ENTRY* lpEntries;
 };
 
+#pragma pack(push, 1)
+struct AFX_MODULE_STATE {
+    uint8_t pad0[0x14];     // Padding to offset 0x14
+    char mbFlag;            // 0x14 - enable flag
+    uint8_t pad1[0x1040 - 0x15]; // Padding to offset 0x1040
+    int codepage;           // 0x1040 - Multibyte codepage
+};
+#pragma pack(pop)
+
 // ------------------------------------
 // Minimal base classes
 // ------------------------------------
@@ -98,7 +107,7 @@ struct CCreateContext {
 // ------------------------------------
 // Global MFC function pointers
 // ------------------------------------
-inline CCmdTarget* (__cdecl* AfxGetModuleState)() = reinterpret_cast<CCmdTarget * (__cdecl*)()>(0x004a1b3a);
+inline AFX_MODULE_STATE* (__cdecl* AfxGetModuleState)() = reinterpret_cast<AFX_MODULE_STATE * (__cdecl*)()>(0x004a1b3a);
 inline CWinThread* (__cdecl* AfxGetThread)() = reinterpret_cast<CWinThread * (__cdecl*)()>(0x004a1b2e);
 inline LPCSTR(__cdecl* AfxRegisterWndClass)(UINT, HCURSOR, HBRUSH, HICON) = reinterpret_cast<LPCSTR(__cdecl*)(UINT, HCURSOR, HBRUSH, HICON)>(0x004a1c48);
 

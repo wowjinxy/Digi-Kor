@@ -8,11 +8,13 @@ namespace Cicada {
 
         //{ "CDWWndOnCreate",       0x0040EA90, reinterpret_cast<void*>(&CDWWnd::OnCreate),     HookType::CODE, true  },
         { "InitializeFrameTimer", 0x00410d40, reinterpret_cast<void*>(&InitializeFrameTimer), HookType::CODE, false },
-        { "origReadEntireFile",   0x0041a0c0, reinterpret_cast<void*>(&ReadEntireFile),       HookType::CODE, true  },
-        { "MFC42WinMain",         0x004a21f4, reinterpret_cast<void*>(&DigiMain),             HookType::CODE, true  },
+        { "ConvertJKParser",   0x0043d990, reinterpret_cast<void*>(&ConvertJKParser),       HookType::CODE, true  },
+        { "MFC42WinMain",         0x004a21f4, reinterpret_cast<void*>(&DigiMain),             HookType::CODE, false  },
         { "CWnd_WindowProc",      0x004a1bca, reinterpret_cast<void*>(&WndProc),              HookType::CODE, false },
         { "_ftol",                0x004a1e9c, reinterpret_cast<void*>(&_ftol),                HookType::CODE, false },
         { "_EH_prolog",           0x004a20e8, reinterpret_cast<void*>(&_EH_prolog),           HookType::CODE, false },
+        { "SetModuleStateAndCodePage", 0x004a21b4, reinterpret_cast<void*>(&SetModuleStateAndCodePage), HookType::CODE, true },
+        //{ "ProcessData", 0x0043deb0, reinterpret_cast<void*>(&ProcessData_Hook), HookType::CODE, true },
         { "timeGetTime",          0x004a738c, reinterpret_cast<void*>(&timeGetTime),          HookType::AUTO, true  }
     };
 
@@ -30,7 +32,7 @@ namespace Cicada {
     CICADA_DECLARE_HOOK(int, WINAPI, SDL2SetBkMode, (HDC, int));
     CICADA_DECLARE_HOOK(int, WINAPI, SDL2GetObjectA, (HGDIOBJ, int, LPVOID));
     CICADA_DECLARE_HOOK(COLORREF, WINAPI, SDL2SetTextColor, (HDC, COLORREF));
-    CICADA_DECLARE_HOOK(BOOL, WINAPI, SDL2GetTextExtentPoint32A, (HDC, LPCSTR, int, LPSIZE));
+    //CICADA_DECLARE_HOOK(BOOL, WINAPI, SDL2GetTextExtentPoint32A, (HDC, LPCSTR, int, LPSIZE));
     CICADA_DECLARE_HOOK(BOOL, WINAPI, SDL2GetTextMetricsA, (HDC, LPTEXTMETRICA));
 
 	void RegisterCallsiteHooks() {
@@ -57,10 +59,10 @@ namespace Cicada {
         CICADA_REGISTER_PTRPATCH("SetBkColor", 0x00495f29, SDL2SetBkColor);
         CICADA_REGISTER_PTRPATCH("SetBkMode", 0x00495f1f, SDL2SetBkMode);
         //CICADA_REGISTER_PTRPATCH("GetObjectA", 0x0048673f, SDL2GetObjectA);
-        CICADA_REGISTER_PTRPATCH("GetObjectA [indirect]", 0x004A7030, SDL2GetObjectA);
-        CICADA_REGISTER_PTRPATCH("GetTextExtentPoint32A", 0x004291b2, SDL2GetTextExtentPoint32A);
+        //CICADA_REGISTER_PTRPATCH("GetObjectA [indirect]", 0x004A7030, SDL2GetObjectA);
+        //CICADA_REGISTER_PTRPATCH("GetTextExtentPoint32A", 0x004291b2, SDL2GetTextExtentPoint32A);
         //CICADA_REGISTER_PTRPATCH("GetTextMetricsA", 0x00428ffd, SDL2GetTextMetricsA);
-        CICADA_REGISTER_PTRPATCH("GetTextMetricsA [Indirect]", 0x004A703C, SDL2GetTextMetricsA);
-        CICADA_REGISTER_PTRPATCH("SetTextColor", 0x00495f37, SDL2SetTextColor);
+        //CICADA_REGISTER_PTRPATCH("GetTextMetricsA [Indirect]", 0x004A703C, SDL2GetTextMetricsA);
+        //CICADA_REGISTER_PTRPATCH("SetTextColor", 0x00495f37, SDL2SetTextColor);
     }
 } // namespace Cicada

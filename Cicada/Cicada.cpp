@@ -22,7 +22,7 @@ namespace Cicada {
     }
 
     void ApplyAllHooks() {
-        RegisterCallsiteHooks();  // 🔼 Make sure callsite patches happen before anything else
+        //RegisterCallsiteHooks();  // 🔼 Make sure callsite patches happen before anything else
 
         for (size_t i = 0; i < hookCount; ++i) {
             Hook& h = hooks[i];

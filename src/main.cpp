@@ -9,6 +9,7 @@
 #include <fstream>
 #include "GameGlue.h"
 #include "MFC42.hpp"
+#include <mbctype.h>
 
 AppGlobalStruct* g_AppGlobal = reinterpret_cast<AppGlobalStruct*>(0x004c93d0);
 
@@ -126,4 +127,25 @@ int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	bool didInit;
     didInit = (MFC_WinMain(hInstance, hPrevInstance, (LPSTR)lpCmdLine, nCmdShow));
     return didInit;
+}
+
+int SetModuleStateAndCodePage(bool enableFlag, int codePage)
+{
+    // Get the current MFC module state object
+    AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+
+    // Offset 0x14 is typically the 'm_bDLL' or similar runtime flag
+    *reinterpret_cast<char*>(reinterpret_cast<uint8_t*>(moduleState) + 0x14) = static_cast<char>(enableFlag);
+
+    // Offset 0x1040 appears to be used for storing the codepage
+    *reinterpret_cast<int*>(reinterpret_cast<uint8_t*>(moduleState) + 0x1040) = codePage;
+
+    if (!enableFlag) {
+		_setmbcp(949); // Korean code page
+		//_setmbcp(-3); // Automatic code page
+		//_setmbcp(-1); // Restore default code page
+		//_setmbcp(65001); // UTF-8 code page
+    }
+
+    return 1;
 }

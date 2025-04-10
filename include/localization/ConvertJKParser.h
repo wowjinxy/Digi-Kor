@@ -1,76 +1,60 @@
 #pragma once
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <cstdint>
+#include <Windows.h>
+#include <algorithm>
+#include <stdexcept>
+#include <cstring>
 
-struct JKEntry {
-    std::string jp;
-    std::string kr;
+enum JKTokenType {
+    JKTOKEN_CHAR = 0,
+    JKTOKEN_BIT = 100,
+    JKTOKEN_COLOR = 1,
+    JKTOKEN_ICON = 9,
+    JKTOKEN_DELAY = 0x11,
+    JKTOKEN_FONT = 0x12,
+    JKTOKEN_MISC = 7,
+    JKTOKEN_CMD = 4
 };
 
-using JKTable = std::vector<JKEntry>;
-
-void* ReadEntireFile(const char* filename);
-
-class ConvertJKHandler {
-public:
-    static void __fastcall Hook(ConvertJKHandler* ecx, void*, const char* filename);
-
-    void ConvertJKParser(const char* filename);
-
-    // Memory layout matches offsets from original reverse engineering
-    void* unknown00;       // +0x00
-    void* tableStart;      // +0x08
-    void* tableEnd;        // +0x0C
-    void* unknown10;       // +0x10
-    int   allocator[1];    // +0x14 (we use first int here)
-    void* blockStart;      // +0x18
-    void* blockEnd;        // +0x1C
-    void* blockLimit;      // +0x20
+struct JKToken {
+    JKTokenType type;
+    uint32_t value;
 };
 
+struct ConvertLine {
+    std::vector<JKToken> tokens;
+};
+
+extern "C" void __fastcall ConvertJKParser(void* thisPtr, void* unused, const char* filename);;
 
 // Stubbed types and functions
 using u32 = unsigned int;
 using u8 = unsigned char;
 
-inline void(__stdcall* ProcessData)(int* out) =
-reinterpret_cast<void(__stdcall*)(int* out)>(0x0043deb0);
-
 inline int (*Alloc)(size_t bytes) =
     reinterpret_cast<int(*)(size_t)>(0x004a1a3e);
 
-int AllocateMemory(int srcStart, int srcEnd, int dest);
-
 // AddToStructure - 0x0043E850
-inline void (*AddToStructure)(int base, int count, int* value) =
-reinterpret_cast<void(*)(int, int, int*)>(0x0043e850);
+using AddToStructure_t = void(__stdcall*)(int param1, int param2, int* param3);
+inline AddToStructure_t AddToStructure = reinterpret_cast<AddToStructure_t>(0x0043e850);
 
 // UpdateStructure - 0x0043E590
 inline void(__thiscall* UpdateStructure)(void* ctx, int count, int mode, int* data) =
 reinterpret_cast<void(__thiscall*)(void*, int, int, int*)>(0x0043e590);
 
 // UpdateMemory - 0x0043E880
-inline void (*UpdateMemory)(int a, int b, int* val) =
-reinterpret_cast<void(*)(int, int, int*)>(0x0043e880);
+using UpdateMemory_t = void(__cdecl*)(int start, int end, int sourceCString);
+inline UpdateMemory_t UpdateMemory = reinterpret_cast<UpdateMemory_t>(0x0043e880);
 
 // CleanUpMemory - 0x0043E560
-inline void (*CleanUpMemory)(int a, int b) =
-reinterpret_cast<void(*)(int, int)>(0x0043e560);
-
-// FreeFileBuffer - 0x80000339
-inline void (*FreeFileBuffer)(void* ptr) =
-reinterpret_cast<void(*)(void*)>(0x80000339);
+using CleanUpMemory_t = void(__stdcall*)(int start, int end);
+inline CleanUpMemory_t CleanUpMemory = reinterpret_cast<CleanUpMemory_t>(0x0043e560);
 
 // GetNewIndex - 0x00404780
-inline int (*GetNewIndex)(void* allocator) =
-reinterpret_cast<int(*)(void*)>(0x00404780);
+using GetNewIndex_t = int(__fastcall*)(int ptr);
+inline GetNewIndex_t GetNewIndex = reinterpret_cast<GetNewIndex_t>(0x00404780);
 
-// CFile_Open - 0x80001442
-inline void (*CFile_Open)(...) =
-reinterpret_cast<void(*)(...)>(0x80001442);
-
-// CFile_GetLength - 0x80000CF6
-inline int (*CFile_GetLength)() =
-reinterpret_cast<int(*)()>(0x80000cf6);
-
-// CFile_Close - 0x800007BB
-inline void (*CFile_Close)() =
-reinterpret_cast<void(*)()>(0x800007bb);
