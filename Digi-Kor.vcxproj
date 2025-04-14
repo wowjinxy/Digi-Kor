@@ -137,9 +137,11 @@
     <ClCompile Include="DigimonApp.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="hook_manager.cpp" />
+    <ClCompile Include="InitTable.cpp" />
     <ClCompile Include="rendering\OpenGL.cpp" />
     <ClCompile Include="SDL2.cpp" />
     <ClCompile Include="src\localization\ConvertJKParser.cpp" />
+    <ClCompile Include="src\localization\TokenHandlers.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\render\CDWWnd.cpp" />
     <ClCompile Include="src\render\TextRenderer.cpp" />
@@ -148,6 +150,7 @@
     <ClCompile Include="src\system\Input.cpp" />
     <ClCompile Include="src\system\rendering\win32.cpp" />
     <ClCompile Include="src\system\time.cpp" />
+    <ClCompile Include="src\TIM.cpp" />
     <ClCompile Include="system\Shutdown.cpp" />
     <ClCompile Include="system\TimSystem.cpp" />
     <ClCompile Include="WinProc.cpp" />
@@ -165,6 +168,7 @@
     <ClInclude Include="include\CDWWnd.hpp" />
     <ClInclude Include="include\HookEntryPoints.hpp" />
     <ClInclude Include="include\localization\ConvertJKParser.h" />
+    <ClInclude Include="include\localization\TokenHandlers.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\MFC42.hpp" />
     <ClInclude Include="include\render\TextRenderer.h" />
@@ -173,7 +177,9 @@
     <ClInclude Include="include\system\FWinApp.h" />
     <ClInclude Include="include\system\Input.h" />
     <ClInclude Include="include\system\time.h" />
+    <ClInclude Include="include\TIM.h" />
     <ClInclude Include="include\USER32.hpp" />
+    <ClInclude Include="InitTable.h" />
     <ClInclude Include="rendering\Renderer.hpp" />
     <ClInclude Include="SDL2.hpp" />
     <ClInclude Include="system\Shutdown.hpp" />

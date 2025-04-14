@@ -8,12 +8,6 @@ static int g_TimCounter = 0;                 // Incremented by RegisterTim
 static struct TimObject* g_TimListHead = nullptr; // First registered TIM
 static int g_TimScratch = 0;                 // Unknown purpose, reserved
 
-// Global state
-static uint8_t g_TimStateByte = 0;
-static int g_TimCounter = 0;
-static void* g_TimListHead = nullptr;
-static int _g_TimSomeOtherValue = 0;
-
 // TODO: implement TimObject::Reset() — used by LoadTimFromMemory
 
 bool InitializeTimSystem(uint32_t param) {
@@ -27,14 +21,6 @@ bool InitializeTimSystem(uint32_t param) {
     InitializeTimObjectExSystem();
 
     return true;
-}
-
-void ShutdownTimSystem() {
-    // Later: clean up loaded TIMs or memory pool
-    g_TimListHead = nullptr;
-    g_TimCounter = 0;
-    g_TimScratch = 0;
-    printf("[TIM] Shutdown complete.\n");
 }
 
 void InitTimObjectExPool() {

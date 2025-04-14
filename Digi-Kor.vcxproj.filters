@@ -63,13 +63,7 @@
     <ClCompile Include="hook_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\system\FWinApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WinProc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\localization\ConvertJKParser.cpp">
@@ -104,6 +98,27 @@
     </ClCompile>
     <ClCompile Include="SDL2.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DigimonApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\OpenGL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="system\Shutdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="system\TimSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitTable.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TIM.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\localization\TokenHandlers.cpp">
+      <Filter>Source Files\src\localization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +181,27 @@
     </ClInclude>
     <ClInclude Include="SDL2.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DigimonApp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\Renderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="system\Shutdown.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="system\TimSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InitTable.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TIM.h">
+      <Filter>Header Files\include\system</Filter>
+    </ClInclude>
+    <ClInclude Include="include\localization\TokenHandlers.h">
+      <Filter>Header Files\include\localization</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

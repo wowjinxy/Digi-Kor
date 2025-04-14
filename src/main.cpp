@@ -130,6 +130,8 @@ int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPTSTR lpCmdLine, int nCmdShow)
 #endif
 {
+    psudo_initterm(_InitTable, _InitTable + _InitTableCount);
+
     if (!g_App.Initialize()) {
         return -1;
     }
@@ -139,23 +141,136 @@ int __stdcall DigiMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     return 0;
 }
 
-int SetModuleStateAndCodePage(bool enableFlag, int codePage)
+void SetCodePage()
 {
-    // Get the current MFC module state object
-    AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-
-    // Offset 0x14 is typically the 'm_bDLL' or similar runtime flag
-    *reinterpret_cast<char*>(reinterpret_cast<uint8_t*>(moduleState) + 0x14) = static_cast<char>(enableFlag);
-
-    // Offset 0x1040 appears to be used for storing the codepage
-    *reinterpret_cast<int*>(reinterpret_cast<uint8_t*>(moduleState) + 0x1040) = codePage;
-
-    if (!enableFlag) {
-		_setmbcp(949); // Korean code page
-		//_setmbcp(-3); // Automatic code page
-		//_setmbcp(-1); // Restore default code page
-		//_setmbcp(65001); // UTF-8 code page
-    }
-
-    return 1;
+    _setmbcp(949); // Korean code page
+	//_setmbcp(-3); // Automatic code page
+	//_setmbcp(-1); // Restore default code page
+	//_setmbcp(65001); // UTF-8 code page
 }
+
+InitFunc _InitTable[] =
+{
+    SetCodePage,
+    //InitCStringSubsystem,
+    //InitAppAndRegisterCleanup,
+    //InitTimSubsystem,
+    //STUBBED_SYSTEM,
+    FUN_00410890,
+    FUN_00410910,
+    FUN_00411150,
+    _InitializeTimObjectExSystem,
+    STUBBED_THUNK,
+    thunk_FUN_004199d0,
+    FUN_0041bc40,
+    FUN_0041bc80,
+    FUN_0041c0f0,
+    thunk_FUN_0041c140,
+    FUN_0041c160,
+    thunk_FUN_0041c1b0,
+    thunk_FUN_0041e6d0,
+    FUN_0041eb40,
+    FUN_00420980,
+    FUN_00420b10,
+    FUN_00426470,
+    InitializeFontSystem,
+    FUN_00428a40,
+    FUN_00428a90,
+    FUN_00428ba0,
+    FUN_0042c1a0,
+    FUN_0042c1e0,
+    FUN_0042c220,
+    thunk_FUN_0042c2e0,
+    FUN_0042c440,
+    thunk_FUN_0042c500,
+    thunk_FUN_0042c6e0,
+    FUN_0042c960,
+    thunk_FUN_0042c9b0,
+    FUN_0042ccc0,
+    FUN_0042cee0,
+    FUN_0042d230,
+    FUN_0042f060,
+    thunk_FUN_0042f0b0,
+    FUN_00433560,
+    FUN_00434440,
+    thunk_FUN_00434490,
+    thunk_FUN_00434c50,
+    FUN_00434d00,
+    FUN_004393e0,
+    thunk_FUN_0043a110,
+    thunk_FUN_00443520,
+    thunk_FUN_00443620,
+    thunk_FUN_00443690,
+    thunk_FUN_004436e0,
+    thunk_FUN_00443750,
+    thunk_FUN_004437c0,
+    thunk_FUN_00443830,
+    FUN_004442f0,
+    FUN_00444350,
+    FUN_00446d80,
+    FUN_00446de0,
+    STUBBED_THUNK,
+    FUN_00449450,
+    FUN_004522c0,
+    FUN_00452330,
+    FUN_00453540,
+    FUN_00453580,
+    FUN_00454270,
+    FUN_004543d0,
+    FUN_00454620,
+    FUN_00454e00,
+    FUN_00454e40,
+    FUN_00454ff0,
+    FUN_00455ea0,
+    thunk_FUN_00456850,
+    thunk_FUN_00456890,
+    thunk_FUN_004568d0,
+    thunk_FUN_00456910,
+    thunk_FUN_0045b030,
+    thunk_FUN_0045b800,
+    thunk_FUN_0045b8c0,
+    FUN_0045ca70,
+    LAB_0045cad0,
+    LAB_0045cbc0,
+    LAB_0045de70,
+    LAB_0045ded0,
+    LAB_0045df10,
+    LAB_0045df50,
+    LAB_0045df90,
+    LAB_0045dfd0,
+    LAB_0045e030,
+    LAB_0045e160,
+    LAB_00461760,
+    LAB_004617a0,
+    LAB_00461df0,
+    LAB_004620b0,
+    LAB_004620f0,
+    LAB_00462870,
+    LAB_00465150,
+    LAB_004696e0,
+    LAB_0046bcc0,
+    LAB_0046d070,
+    LAB_0046d0b0,
+    LAB_0046d0f0,
+    LAB_0046d140,
+    LAB_0046d1a0,
+    LAB_00473420,
+    LAB_00479a10,
+    FUN_00479f60,
+    FUN_0047a3b0,
+    FUN_0047a3f0,
+    FUN_0047a430,
+    FUN_0047a490,
+    thunk_FUN_0047b3e0,
+    FUN_0047c6f0,
+    FUN_0047d250,
+    thunk_FUN_0047d710,
+    thunk_FUN_0047da10,
+    thunk_FUN_00481df0,
+    thunk_FUN_00481e90,
+    FUN_004824a0,
+    FUN_00485690,
+    FUN_004a1960
+};
+
+const size_t _InitTableCount = sizeof(_InitTable) / sizeof(_InitTable[0]);

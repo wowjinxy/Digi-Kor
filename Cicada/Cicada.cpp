@@ -13,16 +13,9 @@ namespace Cicada {
         return nullptr;
     }
 
-    void PatchString(uintptr_t target, const char* replacement) {
-        DWORD oldProtect;
-        if (VirtualProtect(reinterpret_cast<void*>(target), sizeof(const char*), PAGE_EXECUTE_READWRITE, &oldProtect)) {
-            *reinterpret_cast<const char**>(target) = replacement;
-            VirtualProtect(reinterpret_cast<void*>(target), sizeof(const char*), oldProtect, &oldProtect);
-        }
-    }
-
     void ApplyAllHooks() {
         //RegisterCallsiteHooks();  // 🔼 Make sure callsite patches happen before anything else
+        RegisterStringPatches();
 
         for (size_t i = 0; i < hookCount; ++i) {
             Hook& h = hooks[i];

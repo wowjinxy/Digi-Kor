@@ -27,18 +27,15 @@ namespace Cicada {
     // Lookup an original function pointer by hook name
     void* GetOriginalFunction(const char* name);
 
-    // Patch a hardcoded const char* string in memory
-    void PatchString(uintptr_t target, const char* replacement);
-
     // Apply all hooks (basic IAT and function pointer patching)
     void ApplyAllHooks();
 
-	// === Call-Site Patch Support ===
-	void PatchCallAbsolute(uintptr_t address, void* hookFunc, void** originalOut = nullptr);
+    // === Call-Site Patch Support ===
+    void PatchCallAbsolute(uintptr_t address, void* hookFunc, void** originalOut = nullptr);
 
     void* CreateTrampoline(void* target, size_t patchSize);
 
-	void PatchWithTrampoline(uintptr_t address, void* hookFunc, void** trampolineOut, size_t patchSize);
+    void PatchWithTrampoline(uintptr_t address, void* hookFunc, void** trampolineOut, size_t patchSize);
 
     void PatchPointer(void** address, void* hookFunc, void** originalOut = nullptr);
 
@@ -57,6 +54,11 @@ namespace Cicada {
         HMODULE mod = GetModuleHandleA(moduleName);
         return mod ? GetProcAddress(mod, functionName) : nullptr;
     }
+
+    inline void StubbedInitializer() {
+        // No-op or logging
+    }
+}
 
 #define GET_EXE_IMPORT(mod, name, type) \
     reinterpret_cast<type>(Cicada::GetProcFromLoadedModule(mod, name))
@@ -80,6 +82,14 @@ namespace Cicada {
         printf("[CICADA] Patched %-30s at 0x%08X → %p (original: %p)\n",                   \
                name, address, reinterpret_cast<void*>(func), original);                    \
     } while (0)
-} // namespace Cicada
+
+#define PATCH_STRING(instructionAddr, replacementPointer) \
+    do { \
+        DWORD _oldProtect; \
+        if (VirtualProtect(reinterpret_cast<void*>((instructionAddr) + 1), sizeof(void*), PAGE_EXECUTE_READWRITE, &_oldProtect)) { \
+            *reinterpret_cast<const char**>((instructionAddr) + 1) = replacementPointer; \
+            VirtualProtect(reinterpret_cast<void*>((instructionAddr) + 1), sizeof(void*), _oldProtect, &_oldProtect); \
+        } \
+    } while (0)
 
 typedef unsigned int uint;

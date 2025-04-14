@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstdint>
+#include <cstdio>
 #include <Windows.h>
 #include <algorithm>
 #include <stdexcept>
@@ -23,13 +24,15 @@ enum JKTokenType {
 struct JKToken {
     JKTokenType type;
     uint32_t value;
+
+    JKToken(JKTokenType t, uint32_t v) : type(t), value(v) {}
 };
 
 struct ConvertLine {
     std::vector<JKToken> tokens;
 };
 
-extern "C" void __fastcall ConvertJKParser(void* thisPtr, void* unused, const char* filename);;
+extern "C" void __fastcall ConvertJKParser(void* thisPtr, void* dummy, const char* filename);
 
 // Stubbed types and functions
 using u32 = unsigned int;

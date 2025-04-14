@@ -79,8 +79,6 @@ void DigimonApp::Shutdown() {
         windowHandle = nullptr;
     }
 
-    ShutdownTimSystem();
-
     TTF_Quit();
     SDL_Quit();
 }

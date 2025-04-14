@@ -1,157 +1,169 @@
-﻿#include "localization/ConvertJKParser.h"
+﻿#include "localization/TokenHandlers.h"
+#include "localization/ConvertJKParser.h"
+#include <vector>
+#include <fstream>
+#include <cstdio>
+#include <cstring>
+#include <windows.h>
 
-static bool IsLeadByte(uint8_t byte) {
-    return ::IsDBCSLeadByte(byte); // use :: to force global scope resolution
+// Utility to load file into memory like original ReadEntireFile
+void* ReadEntireFile(const char* filename) {
+    FILE* f = fopen(filename, "rb");
+    if (!f) {
+        char buffer[256];
+        snprintf(buffer, sizeof(buffer), "Unable to read %s.", filename);
+        MessageBoxA(nullptr, buffer, "Digimon World", MB_OK | MB_ICONERROR);
+        return nullptr;
+    }
+
+    fseek(f, 0, SEEK_END);
+    long size = ftell(f);
+    rewind(f);
+
+    void* buffer = malloc(size);
+    if (!buffer) {
+        fclose(f);
+        return nullptr;
+    }
+
+    fread(buffer, 1, size, f);
+    fclose(f);
+    return buffer;
 }
 
+static bool IsLeadByte(uint8_t byte) {
+    return ::IsDBCSLeadByte(byte); // Use WinAPI to detect DBCS
+}
 
 std::vector<JKToken> ProcessData(const uint8_t* input, size_t length) {
-    std::vector<JKToken> JKTokens;
+    std::vector<JKToken> tokens;
     size_t offset = 0;
-
-    auto insertJKToken = [&](JKTokenType type, uint32_t val = 0) {
-        JKTokens.push_back({ type, val });
-        };
-
-    auto readIntFrom = [&](const uint8_t* ptr, size_t len) -> uint32_t {
-        char buf[16] = { 0 };
-        for (size_t i = 0; i < len && i < 15; ++i)
-            buf[i] = static_cast<char>(ptr[i]);
-        return static_cast<uint32_t>(atoi(buf));
-        };
 
     while (offset < length) {
         uint8_t ch = input[offset];
 
         if (ch == '{' && offset + 1 < length && input[offset + 1] == '}') {
-            insertJKToken(JKTOKEN_BIT);
+            HandleBitToken(tokens);
             offset += 2;
-            continue;
         }
-
-        if (ch == 'C' && offset + 2 < length) {
-            insertJKToken(JKTOKEN_COLOR);
-            uint32_t val = readIntFrom(&input[offset + 1], 2);
-            insertJKToken(JKTOKEN_CHAR, val);
+        else if (ch == 'C' && offset + 2 < length) {
+            HandleColorToken(tokens, &input[offset + 1]);
             offset += 3;
-            continue;
         }
-
-        if (ch == 'I' && offset + 4 < length) {
-            insertJKToken(JKTOKEN_ICON);
-            uint32_t val = readIntFrom(&input[offset + 1], 4);
-            insertJKToken(JKTOKEN_CHAR, val);
+        else if (ch == 'I' && offset + 4 < length) {
+            HandleIconToken(tokens, &input[offset + 1]);
             offset += 5;
-            continue;
         }
-
-        if (ch == 'D' && offset + 4 < length) {
-            insertJKToken(JKTOKEN_DELAY);
-            uint32_t val = readIntFrom(&input[offset + 1], 4);
-            insertJKToken(JKTOKEN_CHAR, val);
+        else if (ch == 'D' && offset + 4 < length) {
+            HandleDelayToken(tokens, &input[offset + 1]);
             offset += 5;
-            continue;
         }
-
-        if (ch == 'F' && offset + 4 < length) {
-            insertJKToken(JKTOKEN_FONT);
-            uint32_t val = readIntFrom(&input[offset + 1], 4);
-            insertJKToken(JKTOKEN_CHAR, val);
+        else if (ch == 'F' && offset + 4 < length) {
+            HandleFontToken(tokens, &input[offset + 1]);
             offset += 5;
-            continue;
         }
-
-        if (ch == 'M' && offset + 4 < length) {
-            insertJKToken(JKTOKEN_MISC);
-            uint32_t val = readIntFrom(&input[offset + 1], 4);
-            insertJKToken(JKTOKEN_CHAR, val);
+        else if (ch == 'M' && offset + 4 < length) {
+            HandleMiscToken(tokens, &input[offset + 1]);
             offset += 5;
-            continue;
         }
-
-        if (ch == 'R' && offset + 2 < length) {
-            uint8_t lead = input[offset + 2];
-            if (IsLeadByte(lead)) {
-                if (input[offset + 1] == '1') {
-                    insertJKToken(JKTOKEN_CMD);
-                    insertJKToken(JKTOKEN_CHAR, 1);
-                    offset += 2;
-                }
-            }
-            else {
-                insertJKToken(JKTOKEN_CMD);
-                uint32_t val = readIntFrom(&input[offset + 1], 3);
-                insertJKToken(JKTOKEN_CHAR, val);
-                offset += 4;
-            }
-            continue;
+        else if (ch == 'R' && offset + 3 < length) {
+            HandleRCommandToken(tokens, &input[offset]);
+            offset += 4;
         }
-
-        if (ch == '$' && offset + 1 < length) {
-            uint8_t cmd = input[offset + 1];
-            uint32_t val = 0x20;
-
-            switch (cmd) {
-            case 'B': val = 10; break;
-            case 'D': val = 0x13; break;
-            case 'E': val = 0x14; break;
-            case 'F': val = 0x15; break;
-            case 'M': val = 6; break;
-            case 'N': val = 5; break;
-            case 'P': val = 0x0b; break;
-            case 'S': val = 0x10; break;
-            default: break;
-            }
-            insertJKToken(JKTOKEN_CMD, val);
-            insertJKToken(JKTOKEN_CMD, 0x20);
+        else if (ch == '$' && offset + 1 < length) {
+            HandleDollarToken(tokens, input[offset + 1]);
             offset += 2;
-            continue;
         }
-
-        insertJKToken(JKTOKEN_CHAR, ch);
-        offset += 1;
-
-        if (IsLeadByte(ch) && offset < length) {
-            insertJKToken(JKTOKEN_CHAR, input[offset]);
-            offset += 1;
+        else {
+            size_t step = HandleDefaultChar(tokens, input, offset, length);
+            if (step == 0) step = 1;
+            offset += step;
         }
     }
 
-    return JKTokens;
+    return tokens;
 }
 
+extern "C" void __fastcall ConvertJKParser(void* thisPtr, void*, const char* filename);
+
 void __fastcall ConvertJKParser(void* thisPtr, void*, const char* filename) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) return;
+    printf("[ConvertJKParser] Starting parse for: %s\n", filename);
 
-    std::vector<uint8_t> buffer((std::istreambuf_iterator<char>(file)),
-        std::istreambuf_iterator<char>());
+    // === Load file into heap memory (stored in this + 0xAA4) ===
+    void* fileMem = ReadEntireFile(filename);
+    if (!fileMem) {
+        printf(" ! Failed to read file into memory\n");
+        return;
+    }
 
-    const uint8_t marker[] = { 0x30, 0x64, 0x30, 0x61 };
+    *(void**)((uint8_t*)thisPtr + 0xAA4) = fileMem;
+
+    // === Validate expected internal memory layout ===
+    int* begin1 = *(int**)((uint8_t*)thisPtr + 0x08);
+    int* end1 = *(int**)((uint8_t*)thisPtr + 0x0C);
+    int* begin2 = *(int**)((uint8_t*)thisPtr + 0x18);
+    int* end2 = *(int**)((uint8_t*)thisPtr + 0x1C);
+
+    printf(" - begin1: %p, end1: %p\n", (void*)begin1, (void*)end1);
+    printf(" - begin2: %p, end2: %p\n", (void*)begin2, (void*)end2);
+
+    if (!begin1 || !end1 || ((end1 - begin1) == 0)) {
+        printf(" ! Validation failed: (end1 - begin1) == 0 or null\n");
+        return;
+    }
+    if (begin2 && end2 && ((end2 - begin2) != 0)) {
+        printf(" ! Validation failed: (end2 - begin2) != 0 (should be empty)\n");
+        return;
+    }
+
+    // === Construct byte buffer from raw memory ===
+    uint8_t* fileStart = static_cast<uint8_t*>(fileMem);
+    size_t fileLength = strlen((char*)fileMem); // This is *not* ideal for binary data!
+
+    // If you know the correct size from disk, use it instead of strlen:
+    // std::ifstream f(filename, std::ios::binary | std::ios::ate);
+    // size_t fileLength = f.tellg(); // <== better!
+
+    std::vector<uint8_t> buffer(fileStart, fileStart + fileLength);
+
+    const uint8_t marker[] = { '0', 'd', '0', 'a' }; // == 0x30, 0x64, 0x30, 0x61
     size_t offset = 0;
     int lineIndex = 0;
 
     while (offset < buffer.size()) {
         auto it = std::search(buffer.begin() + offset, buffer.end(),
             std::begin(marker), std::end(marker));
-        if (it == buffer.end()) break;
+        if (it == buffer.end())
+            break;
 
         size_t next = std::distance(buffer.begin(), it);
+
+        // Create a null-terminated line buffer for tokenization
         std::vector<uint8_t> raw(buffer.begin() + offset, buffer.begin() + next);
+        raw.push_back(0); // null-terminate
+
         std::vector<JKToken> JKTokens = ProcessData(raw.data(), raw.size());
 
-        // Allocate temporary array and write into game memory using AddToStructure
+        // Convert to flat int array
         std::vector<int> packed(JKTokens.size() * 2);
         for (size_t i = 0; i < JKTokens.size(); ++i) {
             packed[i * 2 + 0] = JKTokens[i].type;
-            packed[i * 2 + 1] = JKTokens[i].value;
+            packed[i * 2 + 1] = static_cast<int>(JKTokens[i].value);
         }
 
-        int* dataPtr = packed.data();
-        int base = *(int*)((uint8_t*)thisPtr + (lineIndex % 2 == 0 ? 0x18 : 0x1c));
-        AddToStructure(base, 1, dataPtr);
+        // Choose destination memory range (even: begin1 / 0x18, odd: begin2 / 0x1C)
+        int baseOffset = (lineIndex % 2 == 0) ? 0x18 : 0x1C;
+        int* basePtr = *(int**)((uint8_t*)thisPtr + baseOffset);
 
-        offset = next + 4;
+        if (!basePtr) {
+            printf(" ! Skipping line %d: base at 0x%X is null\n", lineIndex, baseOffset);
+        }
+        else {
+            AddToStructure((int)basePtr, 1, packed.data());
+            printf(" + Added %zu tokens to base 0x%08X\n", JKTokens.size(), (unsigned int)(uintptr_t)basePtr);
+        }
+
+        offset = next + sizeof(marker);
         ++lineIndex;
     }
 }
