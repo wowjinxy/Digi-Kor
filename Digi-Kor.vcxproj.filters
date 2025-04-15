@@ -78,7 +78,7 @@
     <ClCompile Include="src\system\time.cpp">
       <Filter>Source Files\src\system</Filter>
     </ClCompile>
-    <ClCompile Include="src\system\Input.cpp">
+    <ClCompile Include="src\system\InputSystem.cpp">
       <Filter>Source Files\src\system</Filter>
     </ClCompile>
     <ClCompile Include="src\system\ExceptionHandler.cpp">
@@ -149,7 +149,7 @@
     <ClInclude Include="include\system\FWinApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\system\Input.h">
+    <ClInclude Include="include\system\InputSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WinProc.h">

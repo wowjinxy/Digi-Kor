@@ -1,6 +1,6 @@
 #include <iostream>
 #include <main.h>
-#include <include/system/Input.h>
+#include <system/InputSystem.hpp>
 #include <fstream>
 #include <gl/GL.h>
 
@@ -11,7 +11,7 @@ LRESULT CALLBACK FullWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
 	case WM_CREATE:
-		RegisterForRawInput(hWnd);
+		//RegisterForRawInput(hWnd);
 		break;
 	case WM_COPYDATA:
 		std::cout << "[WM_COPYDATA] Data received." << std::endl;
@@ -208,7 +208,7 @@ LRESULT CALLBACK FullWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return hit; // Don't override unless you want to customize hit zones, this allows users to drag the window.
 	}
 	case WM_INPUT:
-		HandleRawInput(lParam);
+		//HandleRawInput(lParam);
 		break;
 	case WM_GETDLGCODE:
 		std::cout << "[WndProc] WM_GETDLGCODE" << std::endl;

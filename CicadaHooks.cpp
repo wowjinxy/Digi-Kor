@@ -13,6 +13,7 @@ namespace Cicada {
         // Hook table (used by ApplyAllHooks)
 
         //{ "CDWWndOnCreate",       0x0040EA90, reinterpret_cast<void*>(&CDWWnd::OnCreate),     HookType::CODE, true  },
+        { "UpdateInputState",       0x0041fc90, reinterpret_cast<void*>(&UpdateInputState_SDL),     HookType::CODE, true  },
         { "InitializeFrameTimer", 0x00410d40, reinterpret_cast<void*>(&InitializeFrameTimer), HookType::CODE, false },
         { "ConvertJKParser",   0x0043d990, reinterpret_cast<void*>(&ConvertJKParser),       HookType::CODE, true  },
         { "CWnd_WindowProc",      0x004a1bca, reinterpret_cast<void*>(&WndProc),              HookType::CODE, false },

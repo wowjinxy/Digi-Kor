@@ -5,12 +5,43 @@
 #include "hook_manager.hpp"
 #include "system/ExceptionHandler.h"
 #include "ConfigINI.h"
+#include "system/InputSystem.hpp"
 #include <Cicada/Cicada.hpp>
 #include <CicadaHooks.hpp>
+#include <SDL.h>
+#include <thread>
 
 FARPROC p[3] = { 0 };
 
 ConfigINI config("config.ini");
+
+std::atomic<bool> g_Running = true;
+std::thread g_InputThread;
+
+void PollInputLoop() {
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+
+    while (g_Running.load()) {
+        //SDL_PumpEvents();
+
+        //const uint8_t* keys = SDL_GetKeyboardState(NULL);
+
+        //*INPUT_SPACE = keys[SDL_SCANCODE_SPACE] ? 1 : 0;
+        //*INPUT_LEFT = keys[SDL_SCANCODE_LEFT] ? 1 : 0;
+        //*INPUT_RIGHT = keys[SDL_SCANCODE_RIGHT] ? 1 : 0;
+        //*INPUT_UP = keys[SDL_SCANCODE_UP] ? 1 : 0;
+        //*INPUT_DOWN = keys[SDL_SCANCODE_DOWN] ? 1 : 0;
+        //*INPUT_Z = keys[SDL_SCANCODE_Z] ? 1 : 0;
+        //*INPUT_X = keys[SDL_SCANCODE_X] ? 1 : 0;
+        //*INPUT_D = keys[SDL_SCANCODE_D] ? 1 : 0;
+        //*INPUT_S = keys[SDL_SCANCODE_S] ? 1 : 0;
+        //*INPUT_ESC = keys[SDL_SCANCODE_ESCAPE] ? 1 : 0;
+
+        //SDL_Delay(16); // ~60 FPS
+    }
+
+    SDL_Quit();
+}
 
 void CreateConsole() {
     AllocConsole();
@@ -101,10 +132,14 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
 
         ApplyNoCD();
 
+        g_InputThread = std::thread(PollInputLoop);
+
         CreateThread(0, 0, DeferredStartup, 0, 0, 0);
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
+        g_Running = false;
+        if (g_InputThread.joinable()) g_InputThread.join();
         ShutdownHooks();
     }
 

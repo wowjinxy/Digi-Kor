@@ -147,7 +147,7 @@
     <ClCompile Include="src\render\TextRenderer.cpp" />
     <ClCompile Include="src\system\CRT.cpp" />
     <ClCompile Include="src\system\ExceptionHandler.cpp" />
-    <ClCompile Include="src\system\Input.cpp" />
+    <ClCompile Include="src\system\InputSystem.cpp" />
     <ClCompile Include="src\system\rendering\win32.cpp" />
     <ClCompile Include="src\system\time.cpp" />
     <ClCompile Include="src\TIM.cpp" />
@@ -175,7 +175,7 @@
     <ClInclude Include="include\system\CRT.h" />
     <ClInclude Include="include\system\ExceptionHandler.h" />
     <ClInclude Include="include\system\FWinApp.h" />
-    <ClInclude Include="include\system\Input.h" />
+    <ClInclude Include="include\system\InputSystem.hpp" />
     <ClInclude Include="include\system\time.h" />
     <ClInclude Include="include\TIM.h" />
     <ClInclude Include="include\USER32.hpp" />

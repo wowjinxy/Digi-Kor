@@ -87,6 +87,8 @@ std::vector<JKToken> ProcessData(const uint8_t* input, size_t length) {
 extern "C" void __fastcall ConvertJKParser(void* thisPtr, void*, const char* filename);
 
 void __fastcall ConvertJKParser(void* thisPtr, void*, const char* filename) {
+    return;
+
     printf("[ConvertJKParser] Starting parse for: %s\n", filename);
 
     // === Load file into heap memory (stored in this + 0xAA4) ===

@@ -5,7 +5,7 @@
 
 // 🎮 Core systems (game-level logic)
 #include "main.h"
-#include "system/Input.h"
+#include "system/InputSystem.hpp"
 #include "system/time.h"
 #include "system/CRT.h"
 #include "system/ExceptionHandler.h"
