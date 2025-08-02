@@ -1,0 +1,61 @@
+# New files to add to Digi-Kor.vcxproj (D3D8 Shim Architecture)
+
+## Engine Module Source Files
+src\engine\application\MFCApplication.cpp
+src\engine\application\WindowManager.cpp
+src\engine\graphics\FontSystem.cpp
+src\engine\graphics\TextProcessor.cpp (text processing only - rendering via shim)
+src\engine\timing\TimSystem.cpp (moved from system\)
+src\engine\timing\TIM.cpp (moved from src\)
+src\engine\input\InputManager.cpp
+src\engine\input\InputSystem.cpp (moved from src\system\)
+
+## Game Module Source Files
+src\game\world\MapSystem.cpp
+src\game\entities\DigimonManager.cpp
+src\game\battle\BattleSystem.cpp
+src\game\ui\MenuSystem.cpp
+src\game\persistence\SaveSystem.cpp
+
+## Media Module Source Files
+src\media\audio\SoundSystem.cpp
+src\media\assets\ResourceLoader.cpp
+src\media\localization\ConvertJKParser.cpp (moved from src\localization\)
+src\media\localization\TokenHandlers.cpp (moved from src\localization\)
+
+## Platform Module Source Files
+src\platform\windows\WindowsAPI.cpp
+src\platform\memory\MemoryManager.cpp
+
+## Engine Module Header Files
+include\engine\application\MFCApplication.h
+include\engine\application\WindowManager.h
+include\engine\graphics\FontSystem.h
+include\engine\graphics\TextProcessor.h (text processing only)
+include\engine\timing\TimSystem.h
+include\engine\timing\TIM.h (moved from include\)
+include\engine\input\InputManager.h
+include\engine\input\InputSystem.hpp (moved from include\system\)
+
+## Game Module Header Files
+include\game\world\MapSystem.h
+include\game\entities\DigimonManager.h
+include\game\battle\BattleSystem.h
+include\game\ui\MenuSystem.h
+include\game\persistence\SaveSystem.h
+
+## Media Module Header Files
+include\media\audio\SoundSystem.h
+include\media\assets\ResourceLoader.h
+include\media\localization\ConvertJKParser.h (moved from include\localization\)
+include\media\localization\TokenHandlers.h (moved from include\localization\)
+
+## Platform Module Header Files
+include\platform\windows\WindowsAPI.h
+include\platform\memory\MemoryManager.h
+
+## Notes:
+- OpenGL and SDL2 dependencies removed
+- Direct3D rendering handled by external D3D8 shim
+- Focus on game logic, input processing, and asset management
+- Text processing for font metrics (actual rendering via shim)

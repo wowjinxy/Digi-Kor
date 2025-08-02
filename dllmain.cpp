@@ -2,13 +2,14 @@
 #include <tchar.h>
 #include <iostream>
 #include <cstdio>
-#include "hook_manager.hpp"
-#include "system/ExceptionHandler.h"
 #include "ConfigINI.h"
-#include "system/InputSystem.hpp"
-#include <Cicada/Cicada.hpp>
-#include <CicadaHooks.hpp>
-#include <SDL.h>
+// Hooks temporarily disabled to isolate No-CD patch
+// #include "hook_manager.hpp"
+// #include "system/ExceptionHandler.h"
+// #include "system/InputSystem.hpp"
+// #include "Cicada/Cicada.hpp"
+// #include "CicadaHooks.hpp"
+// #include "HookEntryPoints.hpp"
 #include <thread>
 
 FARPROC p[3] = { 0 };
@@ -19,35 +20,41 @@ std::atomic<bool> g_Running = true;
 std::thread g_InputThread;
 
 void PollInputLoop() {
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-
+    // Input polling now handled by the game's native input system
+    // We'll hook into the game's input processing instead of using SDL2
+    
     while (g_Running.load()) {
-        //SDL_PumpEvents();
-
-        //const uint8_t* keys = SDL_GetKeyboardState(NULL);
-
-        //*INPUT_SPACE = keys[SDL_SCANCODE_SPACE] ? 1 : 0;
-        //*INPUT_LEFT = keys[SDL_SCANCODE_LEFT] ? 1 : 0;
-        //*INPUT_RIGHT = keys[SDL_SCANCODE_RIGHT] ? 1 : 0;
-        //*INPUT_UP = keys[SDL_SCANCODE_UP] ? 1 : 0;
-        //*INPUT_DOWN = keys[SDL_SCANCODE_DOWN] ? 1 : 0;
-        //*INPUT_Z = keys[SDL_SCANCODE_Z] ? 1 : 0;
-        //*INPUT_X = keys[SDL_SCANCODE_X] ? 1 : 0;
-        //*INPUT_D = keys[SDL_SCANCODE_D] ? 1 : 0;
-        //*INPUT_S = keys[SDL_SCANCODE_S] ? 1 : 0;
-        //*INPUT_ESC = keys[SDL_SCANCODE_ESCAPE] ? 1 : 0;
-
-        //SDL_Delay(16); // ~60 FPS
+        // TODO: Hook into game's native input processing
+        // No longer using SDL2 since D3D8 shim handles input/windowing
+        
+        Sleep(16); // ~60 FPS timing
     }
-
-    SDL_Quit();
 }
 
 void CreateConsole() {
-    AllocConsole();
-    freopen("CONOUT$", "w", stdout);
-    freopen("CONOUT$", "w", stderr);
-    freopen("CONIN$", "r", stdin);
+    // Check if console already exists
+    if (GetConsoleWindow() != NULL) {
+        return; // Console already allocated
+    }
+    
+    // Try to allocate console with error checking
+    if (!AllocConsole()) {
+        return; // Failed to allocate console, continue silently
+    }
+    
+    // Try to redirect streams with error checking
+    if (freopen_s(nullptr, "CONOUT$", "w", stdout) != 0) {
+        FreeConsole();
+        return;
+    }
+    if (freopen_s(nullptr, "CONOUT$", "w", stderr) != 0) {
+        FreeConsole();
+        return;
+    }
+    if (freopen_s(nullptr, "CONIN$", "r", stdin) != 0) {
+        FreeConsole();
+        return;
+    }
 
     std::ios::sync_with_stdio();
 
@@ -91,29 +98,34 @@ void ApplyNoCD() {
 }
 
 void ApplyDisplaySettings(const ConfigINI& config) {
+    // Display settings now handled by D3D8 shim
+    // We just log the intended settings for reference
     if (config.getBool("Display", "Fullscreen", false)) {
-        DEVMODE dm = {};
-        dm.dmSize = sizeof(DEVMODE);
-        dm.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
-        dm.dmPelsWidth = config.getInt("Display", "Width", 640);
-        dm.dmPelsHeight = config.getInt("Display", "Height", 480);
-        dm.dmBitsPerPel = 32;
-
-        //if (ChangeDisplaySettings(&dm, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL) {
-            //std::cout << "[+] Fullscreen mode set to " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << "\n";
-        //}
-        //else {
-            //std::cerr << "[-] Failed to set fullscreen display mode.\n";
-        //}
+        int width = config.getInt("Display", "Width", 640);
+        int height = config.getInt("Display", "Height", 480);
+        std::cout << "[+] Display settings: " << width << "x" << height << " (handled by D3D8 shim)\n";
     }
 }
 
 DWORD WINAPI DeferredStartup(LPVOID)
 {
-    CreateConsole();
+    // Wait a bit for the game process to fully initialize
+    Sleep(1000);
+    
+    // Only create console if enabled in config
+    bool enableConsole = config.getBool("Debug", "EnableConsole", false);
+    if (enableConsole) {
+        CreateConsole();
+    }
+    
     ApplyDisplaySettings(config);
-    InitializeHooks(GetModuleHandle(nullptr));
-    InitCrashHandler();
+    
+    // Apply only No-CD patch for now - disable all function hooks
+    ApplyNoCD();
+    
+    // TODO: Re-enable these once No-CD patch is working
+    // InitializeHooks(GetModuleHandle(nullptr));
+    // InitCrashHandler();
     return 0;
 }
 
@@ -130,17 +142,23 @@ extern "C" BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID) {
 
         DisableThreadLibraryCalls(hInst);
 
+        // Hook registration disabled for testing
+        // CICADA_REGISTER_PTRPATCH("WinMain", 0x004a21ac, DigiMain);
+
         ApplyNoCD();
 
-        g_InputThread = std::thread(PollInputLoop);
+        // Input thread disabled - using game's native input system via hooks
+        // g_InputThread = std::thread(PollInputLoop);
 
         CreateThread(0, 0, DeferredStartup, 0, 0, 0);
     }
     else if (reason == DLL_PROCESS_DETACH) {
         if (hL) FreeLibrary(hL);
         g_Running = false;
-        if (g_InputThread.joinable()) g_InputThread.join();
-        ShutdownHooks();
+        // Input thread cleanup no longer needed
+        // if (g_InputThread.joinable()) g_InputThread.join();
+        // Hook shutdown disabled for testing
+        // ShutdownHooks();
     }
 
     return TRUE;

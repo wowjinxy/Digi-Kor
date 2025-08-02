@@ -1,84 +1,46 @@
-﻿// // DigimonApp.cpp
+﻿// DigimonApp.cpp
 #include "DigimonApp.hpp"
-#include "rendering/Renderer.hpp"
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <system/TimSystem.hpp>
+#include "engine/timing/TimSystem.h"
+#include <windows.h>
+#include <iostream>
 
 DigimonApp g_App;
 
 bool DigimonApp::Initialize() {
     isRunning = false;
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
-        SDL_Log("SDL_Init failed: %s", SDL_GetError());
+    std::cout << "[DigimonApp] Initializing application (D3D8 shim handles rendering)..." << std::endl;
+
+    // Window creation handled by D3D8 shim
+    windowHandle = nullptr; // Will be set by game initialization
+
+    // Initialize timing system
+    if (!Engine::Timing::TimSystem::Initialize()) {
+        std::cerr << "[DigimonApp] Failed to initialize TimSystem." << std::endl;
         return false;
     }
-
-    if (TTF_Init() != 0) {
-        SDL_Log("TTF_Init failed: %s", TTF_GetError());
-        return false;
-    }
-
-    windowHandle = SDL_CreateWindow(
-        "Digimon World",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        640, 480,
-        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
-    );
-
-    if (!windowHandle) {
-        SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
-        return false;
-    }
-
-    if (!Renderer_Initialize(windowHandle)) {
-        SDL_Log("Renderer initialization failed.");
-        return false;
-    }
-
-	if (!InitializeTimSystem()) {
-		SDL_Log("Failed to initialize TimSystem.");
-		return false;
-	}
 
     isRunning = true;
     return true;
 }
 
 void DigimonApp::Run() {
-    SDL_Event event;
-
     while (isRunning) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                isRunning = false;
-            }
-
-            // Optional: add input handling here
-        }
-
+        // Main game loop - most logic handled by hooks
+        // D3D8 shim handles window messages and rendering
+        
         // Update game state here (placeholder)
         // UpdateGame();
-
-        // Render
-        Renderer_Clear();
-        // RenderGame(); ← TODO
-        Renderer_Present();
-
-        // SDL_GL_SetSwapInterval(1) already limits to VSync
-        // Optionally sleep here for fixed timing if not using VSync
+        
+        // Sleep to prevent busy waiting
+        Sleep(1);
     }
 }
 
 void DigimonApp::Shutdown() {
-    Renderer_Shutdown();
-
-    if (windowHandle) {
-        SDL_DestroyWindow(windowHandle);
-        windowHandle = nullptr;
-    }
-
-    TTF_Quit();
-    SDL_Quit();
+    std::cout << "[DigimonApp] Shutting down application..." << std::endl;
+    
+    Engine::Timing::TimSystem::Shutdown();
+    
+    isRunning = false;
 }

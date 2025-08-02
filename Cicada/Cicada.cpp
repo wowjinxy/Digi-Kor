@@ -1,6 +1,6 @@
 ﻿// === Cicada.cpp ===
 #include "Cicada.hpp"
-#include "CicadaHooks.hpp" // This is the generated file containing hook list
+#include "../CicadaHooks.hpp" // This is the generated file containing hook list
 
 namespace Cicada {
 

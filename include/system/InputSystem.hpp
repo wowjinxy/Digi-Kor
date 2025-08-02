@@ -1,11 +1,11 @@
 #pragma once
-#include <SDL.h>
+#include <windows.h>
 #include <cstdint>
 
 extern uint8_t g_KeyDownFlags[32];
 
 void InitializeInputSystem();
-void UpdateInputState_SDL();
+void UpdateInputState_Native();  // Using native Windows input instead of SDL
 bool IsKeyPressed(int actionIndex);    // just pressed
 bool IsKeyHeld(int actionIndex);       // still held
 bool IsKeyReleased(int actionIndex);   // just released

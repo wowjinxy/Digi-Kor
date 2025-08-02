@@ -2,7 +2,6 @@
 #include <windows.h>
 #include <iostream>
 #include <iomanip> // for std::hex and std::dec
-#include "GameGlue.h"
 
 class FWinThread {
 public:
@@ -43,7 +42,7 @@ public:
                 GameLoopTick(ctx);
             }
 
-            RenderFrame(); // optional: if you want constant redraw
+            // RenderFrame(); // Rendering handled by D3D8 shim
         }
     }
 

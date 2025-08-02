@@ -2,7 +2,6 @@
 #include <main.h>
 #include <system/InputSystem.hpp>
 #include <fstream>
-#include <gl/GL.h>
 
 int g_ViewportWidth = 0;
 int g_ViewportHeight = 0;
@@ -17,8 +16,7 @@ LRESULT CALLBACK FullWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		std::cout << "[WM_COPYDATA] Data received." << std::endl;
 		break;
 	case WM_DESTROY:
-		std::cout << "[WM_DESTROY] Cleaning up OpenGL context." << std::endl;
-		if (g_hGLRC) { wglDeleteContext(g_hGLRC); g_hGLRC = nullptr; }
+		std::cout << "[WM_DESTROY] Cleaning up (D3D8 shim handles graphics)." << std::endl;
 		if (g_hDC) { ReleaseDC(hWnd, g_hDC); g_hDC = nullptr; }
 		PostQuitMessage(0);
 		break;
@@ -27,7 +25,7 @@ LRESULT CALLBACK FullWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		g_ViewportWidth = LOWORD(lParam);
 		g_ViewportHeight = HIWORD(lParam);
 		//std::cout << "[WndProc] WM_SIZE: " << g_ViewportWidth << "x" << g_ViewportHeight << "\n";
-		glViewport(0, 0, g_ViewportWidth, g_ViewportHeight);
+		// Viewport handled by D3D8 shim
 		break;
 	}
 	case WM_SETFOCUS:
@@ -44,7 +42,7 @@ LRESULT CALLBACK FullWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		std::cout << "PAINT\n";
 		PAINTSTRUCT ps;
 		BeginPaint(hWnd, &ps);
-		RenderFrame();
+		// Rendering handled by D3D8 shim
 		EndPaint(hWnd, &ps);
 		break;
 	}

@@ -13,7 +13,7 @@ namespace Cicada {
         // Hook table (used by ApplyAllHooks)
 
         //{ "CDWWndOnCreate",       0x0040EA90, reinterpret_cast<void*>(&CDWWnd::OnCreate),     HookType::CODE, true  },
-        { "UpdateInputState",       0x0041fc90, reinterpret_cast<void*>(&UpdateInputState_SDL),     HookType::CODE, true  },
+        //{ "UpdateInputState",       0x0041fc90, reinterpret_cast<void*>(&UpdateInputState_SDL),     HookType::CODE, true  },
         { "InitializeFrameTimer", 0x00410d40, reinterpret_cast<void*>(&InitializeFrameTimer), HookType::CODE, false },
         { "ConvertJKParser",   0x0043d990, reinterpret_cast<void*>(&ConvertJKParser),       HookType::CODE, true  },
         { "CWnd_WindowProc",      0x004a1bca, reinterpret_cast<void*>(&WndProc),              HookType::CODE, false },
@@ -43,6 +43,8 @@ namespace Cicada {
     //CICADA_DECLARE_HOOK(BOOL, WINAPI, SDL2GetTextExtentPoint32A, (HDC, LPCSTR, int, LPSIZE));
     //CICADA_DECLARE_HOOK(BOOL, WINAPI, SDL2GetTextMetricsA, (HDC, LPTEXTMETRICA));
     //CICADA_DECLARE_HOOK(void, __fastcall, ConvertJKParser, (void* thisPtr, void* dummy, const char* filename));
+    CICADA_DECLARE_HOOK(int, __stdcall, WinMain, (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow));
+
 
 	void RegisterCallsiteHooks() {
 		// Register callsite hooks for GDI functions
@@ -74,7 +76,13 @@ namespace Cicada {
         //CICADA_REGISTER_PTRPATCH("GetTextMetricsA [Indirect]", 0x004A703C, SDL2GetTextMetricsA);
         //CICADA_REGISTER_PTRPATCH("SetTextColor", 0x00495f37, SDL2SetTextColor);
         //CICADA_REGISTER_PTRPATCH("ConvertJKParser", 0x00429531, ConvertJKParser);
+        //CICADA_REGISTER_PTRPATCH("WinMain", 0x004a21ac, DigiMain);
     }
+
+//#pragma section(".CRT$XCU", read)
+    //__declspec(allocate(".CRT$XCU")) void(*early_patch)() = +[] {
+        //CICADA_REGISTER_PTRPATCH("WinMain", 0x004a21ac, DigiMain);
+        //};
 
 #define EN
 

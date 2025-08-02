@@ -13,7 +13,6 @@
 // 🈁 Localization & String parsing
 #include "localization/ConvertJKParser.h"
 
-// 🖋️ Rendering + UI
+// 🖋️ UI (rendering handled by D3D8 shim)
 #include "CDWWnd.hpp"
-#include "SDL2.hpp"
 #include "render/TextRenderer.h"
